@@ -20,13 +20,13 @@ public class Output extends Thread {
 		try {
 			PrintWriter output = new PrintWriter(this.client.getOutputStream(),true);
 		
-			@SuppressWarnings("resource")
-			Scanner scanner = new Scanner(System.in);
+			/*@SuppressWarnings("resource")
+			Scanner scanner = new Scanner(System.in);*/
 			while(true) {
 
 				while(!requete.equals(null) && !requete.equals(requetePrecedent) && !requete.equals("null")) {
 					output.println(Output.getRequete());
-					scanner.nextLine();
+					
 					Output.setRequete(requete);
 					//Output.setRequetePrecedent(requete);
 					

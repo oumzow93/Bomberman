@@ -21,6 +21,8 @@ public class Clavier extends JFrame implements KeyListener {
 		case KeyEvent.VK_NUMPAD4: Output.setRequete("DEPLACEMENT;GAUCHE"); break;
 		case KeyEvent.VK_NUMPAD6: Output.setRequete("DEPLACEMENT;DROITE"); break;
 		
+		default : Output.setRequete("DEPLACEMENT;STOP"); break;
+		
 		}
 		
 	}
