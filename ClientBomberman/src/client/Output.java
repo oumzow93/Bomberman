@@ -23,13 +23,11 @@ public class Output extends Thread {
 
 			while(true) {
 
-				while(!requete.equals(null) && !requete.equals(requetePrecedent) && !requete.equals("null")) {
+				while(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
 					output.println(Output.getRequete());
 					Output.setRequetePrecedent(requete);
 					
 				}
-				
-	
 				output.flush();
 				
 			}
