@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import client.Output;
 
 public class Clavier extends JFrame implements KeyListener {
-
+    public static int compteur=0;
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,12 +16,16 @@ public class Clavier extends JFrame implements KeyListener {
 	public void keyPressed(KeyEvent event) {
 		
 		switch(event.getKeyCode()) {
-		case KeyEvent.VK_NUMPAD8: Output.setRequete("DEPLACEMENT;HAUT"); break;
-		case KeyEvent.VK_NUMPAD2: Output.setRequete("DEPLACEMANT;BAS"); break;
-		case KeyEvent.VK_NUMPAD4: Output.setRequete("DEPLACEMENT;GAUCHE"); break;
-		case KeyEvent.VK_NUMPAD6: Output.setRequete("DEPLACEMENT;DROITE"); break;
+		case KeyEvent.VK_NUMPAD8: 
+			Output.setRequete("DEPLACEMENT;HAUT;"+(++compteur)); break;
+		case KeyEvent.VK_NUMPAD2: 
+			Output.setRequete("DEPLACEMANT;BAS;"+(++compteur)); break;
+		case KeyEvent.VK_NUMPAD4: 
+			Output.setRequete("DEPLACEMENT;GAUCHE;"+(++compteur)); break;
+		case KeyEvent.VK_NUMPAD6: 
+			Output.setRequete("DEPLACEMENT;DROITE;"+(++compteur)); break;
 		
-		default : Output.setRequete("DEPLACEMENT;STOP"); break;
+		default : Output.setRequete("DEPLACEMENT;STOP"+(++compteur)); break;
 		
 		}
 		

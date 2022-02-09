@@ -57,6 +57,7 @@ public class MyServer extends Thread {
 					PrintWriter sortie= new PrintWriter (IOS.getClient().getOutputStream(),true);
 					System.out.println(message);
 					sortie.println(message);
+					sortie.flush();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

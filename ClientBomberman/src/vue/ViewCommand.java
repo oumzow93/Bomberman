@@ -10,7 +10,7 @@ public class ViewCommand   {
 	
 	
 	
-	JFrame fenetreCommand;
+	private JFrame fenetreCommand;
 	//=============PANEL
 	private JPanel panel1;
 	private JPanel panel2;
@@ -61,9 +61,9 @@ public class ViewCommand   {
 		
 		
 		this.pause = new JButton(new ImageIcon("../icons/icon_pause.png"));
-		this.play = new JButton(new ImageIcon("./icons/icon_play.png"));
-		this.restart = new JButton(new ImageIcon("./icons/icon_restart.png"));
-		this.step = new JButton(new ImageIcon("./icons/icon_step.png"));
+		this.play = new JButton(new ImageIcon("../icons/icon_play.png"));
+		this.restart = new JButton(new ImageIcon("../icons/icon_restart.png"));
+		this.step = new JButton(new ImageIcon("../icons/icon_step.png"));
 		
 		this.panel1.add(restart);
 		this.panel1.add(play);
@@ -100,6 +100,11 @@ public class ViewCommand   {
 		
 		
 	}
+	
+	public JFrame getFenetreCommand() {
+		return fenetreCommand;
+	}
+
 	
 	public JButton getPause() {
 		return pause;

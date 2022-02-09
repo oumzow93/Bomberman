@@ -72,8 +72,13 @@ public class Authentification {
 					ViewCommand  commande  = new ViewCommand ();
 					Clavier clavier = new Clavier();
 					
-					commande.fenetreCommand.addKeyListener(clavier);
-					commande.fenetreCommand.setFocusable(true);
+					commande.getFenetreCommand().addKeyListener(clavier);
+					commande.getPause().addKeyListener(clavier);
+					commande.getPlay().addKeyListener(clavier);
+					commande.getRestart().addKeyListener(clavier);
+					commande.getStep().addKeyListener(clavier);
+					commande.getSlider().addKeyListener(clavier);
+					commande.getFenetreCommand().setFocusable(true);
 					
 				}
 			

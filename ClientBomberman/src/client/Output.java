@@ -3,7 +3,7 @@ package client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+
 
 public class Output extends Thread {
 	private Socket client;
@@ -12,7 +12,7 @@ public class Output extends Thread {
 	public Output(Socket client) {
 		super();
 		this.client = client;
-		//this.setRequete("");
+		
 	}
 	
 	@Override
@@ -20,15 +20,12 @@ public class Output extends Thread {
 		try {
 			PrintWriter output = new PrintWriter(this.client.getOutputStream(),true);
 		
-			/*@SuppressWarnings("resource")
-			Scanner scanner = new Scanner(System.in);*/
+
 			while(true) {
 
 				while(!requete.equals(null) && !requete.equals(requetePrecedent) && !requete.equals("null")) {
 					output.println(Output.getRequete());
-					
-					Output.setRequete(requete);
-					//Output.setRequetePrecedent(requete);
+					Output.setRequetePrecedent(requete);
 					
 				}
 				
