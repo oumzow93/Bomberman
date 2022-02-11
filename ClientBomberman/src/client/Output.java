@@ -12,40 +12,39 @@ public class Output extends Thread {
 	public Output(Socket client) {
 		super();
 		this.client = client;
-		
+
 	}
-	
+
 	@Override
 	public void run() {
 		try {
 			PrintWriter output = new PrintWriter(this.client.getOutputStream(),true);
-		
 
 			while(true) {
 
-				while(!requete.equals(null) && !requete.equals(requetePrecedent) && !requete.equals("null")) {
+				while(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
 					output.println(Output.getRequete());
 					Output.setRequetePrecedent(requete);
-					
+
 				}
-				
-	
+
 				output.flush();
-				
+
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch (NullPointerException e) {
+			System.out.println("Problème : " + e.getMessage());
 		}
-		
-		
+
+
 	}
-	
+
 	public static String getRequete() {
 		return requete;
 	}
 	public static void setRequete(String requete) {
-	  Output.requete = requete;
+		Output.requete = requete;
 	}
 
 
@@ -65,6 +64,6 @@ public class Output extends Thread {
 
 
 
-	
+
 
 }
