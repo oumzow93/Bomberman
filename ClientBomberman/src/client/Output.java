@@ -22,7 +22,7 @@ public class Output extends Thread {
 
 			while(true) {
 
-				while(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
+				if(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
 					output.println(Output.getRequete());
 					Output.setRequetePrecedent(requete);
 
@@ -33,9 +33,8 @@ public class Output extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}catch (NullPointerException e) {
-			System.out.println("Problème : " + e.getMessage());
 		}
+
 
 
 	}

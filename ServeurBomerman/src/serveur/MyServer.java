@@ -7,18 +7,23 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.ListIterator;
+
+import modele.BombermanGame;
+import modele.Game;
 
 
 
 public class MyServer extends Thread {
 	private ArrayList<Echange> clients = new ArrayList<>();
 	private int ID_CLIENT;
+	private static Game game;
+	private static String requetteServeur="DEMARAGE";
 
 
 
 	public MyServer() {
 		this.ID_CLIENT=0;
+	    game= new BombermanGame(100, "test");
 	}
 
 	public void run() {
@@ -55,63 +60,45 @@ public class MyServer extends Thread {
 		public void broadcast(String message) {
 
 
-			ListIterator<Echange>iter = clients.listIterator();
-
-			while(iter.hasNext()) {
-				Echange echange= iter.next();
+			for(Echange echange:clients) {
 				try {
 					PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
-					if(!message.equals("null") || !message.equals(null) ) {
-						System.out.println(message);
-						sortie.println(message);
-					}
-					else {
-						System.out.println("DECONNEXION DE CLIENT: "+this.id_client);
-						iter.remove();
-						
-					}
 
-
+					MyServer.gestionRequetteClient(message);
+					sortie.println(requetteServeur);
 					sortie.flush();
 
 				} catch (IOException e) {
 					e.printStackTrace();
-				}catch (NullPointerException e) {
-					//System.out.println("Problème : " + e.getMessage());
 				}
+
 			}
-
-
 
 		}
 		@Override
 		public void run() {
+			String IPadr= client.getRemoteSocketAddress().toString();
+			System.out.println("CONNEXION DU CLIENT : "+this.id_client+" avec IP: "+IPadr);
 			try {
 				BufferedReader  entree = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
 
-				String IPadr= client.getRemoteSocketAddress().toString();
-				System.out.println("CONNEXION DU CLIENT : "+this.id_client+" avec IP: "+IPadr);
 
 
-				while(true) {
+				String reponse;
+				while(!(reponse =  entree.readLine()).equals(null)) {
 					//=================SORTIE
-					String reponse =  entree.readLine();
 					broadcast(reponse);
-
-
-
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}catch (NullPointerException e) {
+				System.out.println("DECONNEXION DU CLIENT :"+this.id_client+" avec IP: "+IPadr);
 			}
 
-
-
-
 		}
-
+		
 
 		public Socket getClient() {
 			return client;
@@ -128,6 +115,31 @@ public class MyServer extends Thread {
 		}
 
 
+	}
+	//=====================================GESTION DES REQUETTE VENANT DU CLIENT 
+	public  static void gestionRequetteClient(String requette) {
+		String []infoRequette = requette.split(";");
+		String entete =infoRequette[0];
+		String info = infoRequette[1];
+		switch(entete) {
+		case "DEPLACEMENT": 
+			if(info.equals("HAUT") || info.equals("BAS") || info.equals("GAUCHE") || info.equals("DROITE")) {
+				game.SetTurn(game.getTurn()+1);
+				requetteServeur= "UPDATE_TURN;"+game.getTurn();
+			}break;
+		}
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public static String getRequetteServeur() {
+		return requetteServeur;
+	}
+
+	public static void setRequetteServeur(String requetteServeur) {
+		MyServer.requetteServeur = requetteServeur;
 	}
 
 	//=========================================================MAIN============================================
