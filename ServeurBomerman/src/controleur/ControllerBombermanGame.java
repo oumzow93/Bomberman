@@ -52,6 +52,17 @@ public class ControllerBombermanGame implements AbstractController {
 		this.game.setTime((long)speed);
 		
 	}
+	
+	@Override
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
 
 
 	

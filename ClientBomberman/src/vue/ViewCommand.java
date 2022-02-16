@@ -60,10 +60,10 @@ public class ViewCommand   {
 		
 		
 		
-		this.pause = new JButton(new ImageIcon("../icons/icon_pause.png"));
-		this.play = new JButton(new ImageIcon("../icons/icon_play.png"));
-		this.restart = new JButton(new ImageIcon("../icons/icon_restart.png"));
-		this.step = new JButton(new ImageIcon("../icons/icon_step.png"));
+		this.pause = new JButton(new ImageIcon("./icons/icon_pause.png"));
+		this.play = new JButton(new ImageIcon("./icons/icon_play.png"));
+		this.restart = new JButton(new ImageIcon("./icons/icon_restart.png"));
+		this.step = new JButton(new ImageIcon("./icons/icon_step.png"));
 		
 		this.panel1.add(restart);
 		this.panel1.add(play);

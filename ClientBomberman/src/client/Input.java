@@ -5,18 +5,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import vue.Clavier;
-import vue.ViewCommand;
+import controleur.Controleurclient;
+import vue.ViewBombermanGame;
+
+
+
 
 public class Input  extends Thread{
 
 	private Socket client;
-	private  ViewCommand  commande;
+	private  ViewBombermanGame  viewGame;
+	private  static String getTrun= "";
 
 	public Input(Socket client) {
 		super();
 		this.client = client;
-		commande  = new ViewCommand ();
+		this.viewGame= new ViewBombermanGame();
+		new Controleurclient(this.viewGame);
 	}
 
 
@@ -45,16 +50,8 @@ public class Input  extends Thread{
 	
 	public  void gestionRequetteServeur(String requette) {
 		if(requette.equals("DEMARAGE")) {
-		    commande.affichier();
-			Clavier clavier = new Clavier();
-			
-			commande.getFenetreCommand().addKeyListener(clavier);
-			commande.getPause().addKeyListener(clavier);
-			commande.getPlay().addKeyListener(clavier);
-			commande.getRestart().addKeyListener(clavier);
-			commande.getStep().addKeyListener(clavier);
-			commande.getSlider().addKeyListener(clavier);
-			commande.getFenetreCommand().setFocusable(true);
+			this.viewGame.afficher();
+
 
 
 			
@@ -64,7 +61,10 @@ public class Input  extends Thread{
 			String info = infoRequette[1];
 			switch(entete) {
 			case "UPDATE_TURN": 
-				commande.UpdateTurn(info);	break;	
+				Input.setGetTrun(info);
+				this.viewGame.actualiser();
+				break;
+					
 			}
 		}
 
@@ -72,6 +72,21 @@ public class Input  extends Thread{
 
 	public Socket getClient() {
 		return client;
+	}
+
+
+	public ViewBombermanGame getViewGame() {
+		return viewGame;
+	}
+
+
+	public static String getGetTrun() {
+		return getTrun;
+	}
+
+
+	public static void setGetTrun(String getTrun) {
+		Input.getTrun = getTrun;
 	}
 
 

@@ -8,22 +8,24 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import controleur.AbstractController;
+import controleur.ControllerBombermanGame;
 import modele.BombermanGame;
-import modele.Game;
+
 
 
 
 public class MyServer extends Thread {
 	private ArrayList<Echange> clients = new ArrayList<>();
 	private int ID_CLIENT;
-	private static Game game;
+	private static AbstractController controller;
 	private static String requetteServeur="DEMARAGE";
 
 
 
 	public MyServer() {
 		this.ID_CLIENT=0;
-	    game= new BombermanGame(100, "test");
+	    
 	}
 
 	public void run() {
@@ -103,7 +105,7 @@ public class MyServer extends Thread {
 		public Socket getClient() {
 			return client;
 		}
-
+        
 
 
 		public int getId_client() {
@@ -124,15 +126,13 @@ public class MyServer extends Thread {
 		switch(entete) {
 		case "DEPLACEMENT": 
 			if(info.equals("HAUT") || info.equals("BAS") || info.equals("GAUCHE") || info.equals("DROITE")) {
-				game.SetTurn(game.getTurn()+1);
-				requetteServeur= "UPDATE_TURN;"+game.getTurn();
+				controller.step();
+				requetteServeur= "UPDATE_TURN;"+controller.getGame().getTurn();
 			}break;
 		}
 	}
 
-	public Game getGame() {
-		return game;
-	}
+
 
 	public static String getRequetteServeur() {
 		return requetteServeur;
@@ -142,10 +142,30 @@ public class MyServer extends Thread {
 		MyServer.requetteServeur = requetteServeur;
 	}
 
+
+
+	public static AbstractController getController() {
+		return controller;
+	}
+
+	public static void setController(AbstractController controller) {
+		MyServer.controller = controller;
+	}
+	
+	
+	
+	
+	
 	//=========================================================MAIN============================================
 	public static void main(String[] args) {
 		new MyServer().start();
+		
+		BombermanGame game = new BombermanGame(1000,"../layouts/niveau3.lay");
+		ControllerBombermanGame controlleer = new ControllerBombermanGame(game);
+		MyServer.setController(controlleer);
 
 	}
 
+
 }
+
