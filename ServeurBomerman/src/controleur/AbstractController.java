@@ -1,6 +1,6 @@
 package controleur;
 
-
+import modele.Game;
 
 public interface AbstractController {
 	
@@ -10,7 +10,11 @@ public interface AbstractController {
 	public abstract void pause();
 	public abstract void  setSpeed(double speed);
 	
-		
+	
+	public abstract Game getGame() ;
+
+	
+
 	
 	
 	
