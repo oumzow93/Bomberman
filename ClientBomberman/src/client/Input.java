@@ -57,7 +57,7 @@ public class Input  extends Thread{
 			case "UPDATE_TURN": 
 				Input.setGetTrun(info);
 				this.viewGame.actualiser();
-				break;
+				//break;
 					
 			}
 		}

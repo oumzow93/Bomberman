@@ -101,7 +101,7 @@ public abstract class Game implements Runnable {
 	public void step() {
 		//this.turn++;
 		if(this.gameContinue() && this.turn<this.maxturn) {
-			this.turn++;
+			++this.turn;
 			this.takeTurn();
 		}else {
 			this.isRunning=false;

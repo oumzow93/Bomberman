@@ -17,14 +17,15 @@ import modele.BombermanGame;
 
 public class MyServer extends Thread {
 	private ArrayList<Echange> clients = new ArrayList<>();
-	private int ID_CLIENT;
+	private static int ID_CLIENT=0;
 	private static AbstractController controller;
-	private static String requetteServeur="DEMARAGE";
+	private static String requetteServeur="DEPLACEMENT;STOP";
+	
 
 
 
 	public MyServer() {
-		this.ID_CLIENT=0;
+		
 	    
 	}
 
@@ -36,8 +37,8 @@ public class MyServer extends Thread {
 			//=========================================BOUCLE INFINI POUR CONNECTER PLUSIEUR CLIENT
 			while(true) {
 				Socket client =server.accept();
-				++this.ID_CLIENT;
-				Echange ech= new Echange(client,this.ID_CLIENT);
+				++ID_CLIENT;
+				Echange ech= new Echange(client,ID_CLIENT);
 				this.clients.add(ech);
 				ech.start();
 
@@ -59,15 +60,24 @@ public class MyServer extends Thread {
 		}
 
 		//============================================BRODCASTING====================================
-		public void broadcast(String message) {
+		public void broadcast(String message , Socket client) {
 
 
 			for(Echange echange:clients) {
 				try {
 					PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
                    if(!message.equals("null") || !message.equals(null)) {
-                	   MyServer.gestionRequetteClient(message);
-   					   sortie.println(requetteServeur);
+                	   String [] infomessage= message.split(";");
+                	   if(infomessage[0].equals("CONNEXION")) {
+                		   if(echange.getClient().equals(client)) {
+                			   sortie.println("DEMARAGE");
+                		   }
+                	   }else {
+                    	   MyServer.gestionRequetteClient(message);
+       					   sortie.println(requetteServeur);
+                		   
+                	   }
+
                    }
 					
 					sortie.flush();
@@ -89,13 +99,22 @@ public class MyServer extends Thread {
 				while(true) {
 					//=================SORTIE
 					String reponse =entree.readLine();
-					broadcast(reponse);
+					broadcast(reponse,client);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}catch (NullPointerException e) {
 				System.out.println("DECONNEXION DU CLIENT :"+this.id_client+" avec IP: "+IPadr);
+				clients.remove(this);
+				--ID_CLIENT;
+				
+				if(ID_CLIENT==0) {
+					controller.getGame().init();
+				}
+
+				
+				
 			}
 
 		}
@@ -123,12 +142,28 @@ public class MyServer extends Thread {
 		String entete =infoRequette[0];
 		String info = infoRequette[1];
 		switch(entete) {
+		case "COMMANDE": 
+			if(info.equals("PLAY")) {
+				controller.play();
+			}
+			if(info.equals("Pause")) {
+				controller.pause();
+			}
+			if(info.equals("STEP")) {
+				controller.step();
+			}
+			if(info.equals("RESTART")) {
+				controller.restart();
+			}
+			break;
+
 		case "DEPLACEMENT": 
 			if(info.equals("HAUT") || info.equals("BAS") || info.equals("GAUCHE") || info.equals("DROITE")) {
 				controller.step();
-				requetteServeur= "UPDATE_TURN;"+controller.getGame().getTurn();
+				
 			}break;
 		}
+		requetteServeur= "UPDATE_TURN;"+controller.getGame().getTurn();
 	}
 
 
