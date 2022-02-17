@@ -32,10 +32,7 @@ public class Input  extends Thread{
 
 			while (true) {
 				String reponse = input.readLine();
-				System.out.println(reponse);
 				gestionRequetteServeur(reponse);
-
-
 			}
 
 
@@ -51,9 +48,6 @@ public class Input  extends Thread{
 	public  void gestionRequetteServeur(String requette) {
 		if(requette.equals("DEMARAGE")) {
 			this.viewGame.afficher();
-
-
-
 			
 		}else {
 			String []infoRequette = requette.split(";");

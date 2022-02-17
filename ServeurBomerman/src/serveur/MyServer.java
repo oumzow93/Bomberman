@@ -65,9 +65,11 @@ public class MyServer extends Thread {
 			for(Echange echange:clients) {
 				try {
 					PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
-
-					MyServer.gestionRequetteClient(message);
-					sortie.println(requetteServeur);
+                   if(!message.equals("null") || !message.equals(null)) {
+                	   MyServer.gestionRequetteClient(message);
+   					   sortie.println(requetteServeur);
+                   }
+					
 					sortie.flush();
 
 				} catch (IOException e) {
@@ -83,13 +85,10 @@ public class MyServer extends Thread {
 			System.out.println("CONNEXION DU CLIENT : "+this.id_client+" avec IP: "+IPadr);
 			try {
 				BufferedReader  entree = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-
-
-
-				String reponse;
-				while(!(reponse =  entree.readLine()).equals(null)) {
+				
+				while(true) {
 					//=================SORTIE
+					String reponse =entree.readLine();
 					broadcast(reponse);
 				}
 			} catch (IOException e) {
