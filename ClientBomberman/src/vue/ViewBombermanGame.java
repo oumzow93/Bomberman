@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import client.Input;
+
 import controleur.Controleurclient;
 import models.InputMap;
 import utils.InfoAgent;
@@ -131,7 +131,7 @@ public class ViewBombermanGame {
 	
 	
 	public  void actualiser() {
-		this.commande.UpdateTurn(Input.getGetTrun());
+		this.commande.UpdateTurn(Controleurclient.getTurn());
 	}
 
 	public JFrame getFrame() {

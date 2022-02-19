@@ -15,7 +15,6 @@ public class Input  extends Thread{
 
 	private Socket client;
 	private  ViewBombermanGame  viewGame;
-	private  static String getTrun= "";
 
 	public Input(Socket client) {
 		super();
@@ -31,8 +30,11 @@ public class Input  extends Thread{
 			BufferedReader input = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 
 			while (true) {
-				String reponse = input.readLine();
-				gestionRequetteServeur(reponse);
+				String reponse ;
+				
+				while((reponse = input.readLine())!=null)  {
+					gestionRequetteServeur(reponse);
+				}
 			}
 
 
@@ -55,10 +57,10 @@ public class Input  extends Thread{
 			String info = infoRequette[1];
 			switch(entete) {
 			case "UPDATE_TURN": 
-				Input.setGetTrun(info);
+				
+				Controleurclient.setTurn(info);
 				this.viewGame.actualiser();
-				//break;
-					
+				break;	
 			}
 		}
 
@@ -74,14 +76,7 @@ public class Input  extends Thread{
 	}
 
 
-	public static String getGetTrun() {
-		return getTrun;
-	}
 
-
-	public static void setGetTrun(String getTrun) {
-		Input.getTrun = getTrun;
-	}
 
 
 

@@ -73,8 +73,8 @@ public class MyServer extends Thread {
                 			   sortie.println("DEMARAGE");
                 		   }
                 	   }else {
-                    	   MyServer.gestionRequetteClient(message);
-       					   sortie.println(requetteServeur);
+                		   MyServer.gestionRequetteClient(message);
+                		   sortie.println(requetteServeur);
                 		   
                 	   }
 
@@ -160,10 +160,11 @@ public class MyServer extends Thread {
 		case "DEPLACEMENT": 
 			if(info.equals("HAUT") || info.equals("BAS") || info.equals("GAUCHE") || info.equals("DROITE")) {
 				controller.step();
-				
+				;
 			}break;
 		}
 		requetteServeur= "UPDATE_TURN;"+controller.getGame().getTurn();
+		
 	}
 
 
