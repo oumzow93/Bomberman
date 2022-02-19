@@ -21,21 +21,19 @@ public class Output extends Thread {
 			PrintWriter output = new PrintWriter(this.client.getOutputStream(),true);
 
 			while(true) {
-
-				while(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
+                 
+				if(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
+					System.out.println(requete);
 					output.println(Output.getRequete());
-					Output.setRequetePrecedent(requete);
-
+					Output.setRequetePrecedent(getRequete());
 				}
-
 				output.flush();
 
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}catch (NullPointerException e) {
-			System.out.println("Problème : " + e.getMessage());
 		}
+
 
 
 	}

@@ -21,9 +21,9 @@ public class MyClient {
 			Input input   = new Input(client);
 			Output output = new Output(client);
 			
-			
-			output.start();
 			input.start();
+			output.start();
+			
 			
 			authen =new Authentification();
 			

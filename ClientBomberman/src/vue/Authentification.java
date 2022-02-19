@@ -65,20 +65,11 @@ public class Authentification {
 				String pass = password.getText();
 				
 				if(!usname.equals("") && !pass.equals("")) {
-					String requete = "connexion;"+usname+";"+pass;
+					String requete = "CONNEXION;"+usname+";"+pass;
 					Output.setRequete(requete);
 					fenetre.setVisible(false);
 					
-					ViewCommand  commande  = new ViewCommand ();
-					Clavier clavier = new Clavier();
-					
-					commande.getFenetreCommand().addKeyListener(clavier);
-					commande.getPause().addKeyListener(clavier);
-					commande.getPlay().addKeyListener(clavier);
-					commande.getRestart().addKeyListener(clavier);
-					commande.getStep().addKeyListener(clavier);
-					commande.getSlider().addKeyListener(clavier);
-					commande.getFenetreCommand().setFocusable(true);
+
 					
 				}
 			

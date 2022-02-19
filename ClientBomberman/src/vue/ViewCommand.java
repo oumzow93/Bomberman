@@ -21,7 +21,7 @@ public class ViewCommand   {
 	private JButton restart;
 	private JButton step;
 	
-	private JLabel label;
+	private  JLabel label;
 	
 	JSlider  slider;
 	
@@ -60,10 +60,10 @@ public class ViewCommand   {
 		
 		
 		
-		this.pause = new JButton(new ImageIcon("../icons/icon_pause.png"));
-		this.play = new JButton(new ImageIcon("../icons/icon_play.png"));
-		this.restart = new JButton(new ImageIcon("../icons/icon_restart.png"));
-		this.step = new JButton(new ImageIcon("../icons/icon_step.png"));
+		this.pause = new JButton(new ImageIcon("./icons/icon_pause.png"));
+		this.play = new JButton(new ImageIcon("./icons/icon_play.png"));
+		this.restart = new JButton(new ImageIcon("./icons/icon_restart.png"));
+		this.step = new JButton(new ImageIcon("./icons/icon_step.png"));
 		
 		this.panel1.add(restart);
 		this.panel1.add(play);
@@ -81,14 +81,13 @@ public class ViewCommand   {
 		slider.setValue(1);
 		this.panel3.add(new JLabel("Nomber of turns per second "));
 		this.panel3.add(slider);
-		this.label = new  JLabel("Turn :0",JLabel.CENTER);
-		this.panel2.add(this.label);
+		label = new  JLabel("Turn :0",JLabel.CENTER);
+		this.panel2.add(label);
 		
 		
 
 		
-		this.fenetreCommand.setVisible(true);
-		this.fenetreCommand.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		
 	
 
@@ -96,9 +95,16 @@ public class ViewCommand   {
 		//=================================GESTIONS DES ÉTAT DES BOUTON 
 		
 		
-	 
 		
-		
+	}
+	
+public void affichier() {
+	this.fenetreCommand.setVisible(true);
+	this.fenetreCommand.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+}
+	
+	public  void UpdateTurn(String trun) {
+		label.setText("Turn:"+trun);
 	}
 	
 	public JFrame getFenetreCommand() {

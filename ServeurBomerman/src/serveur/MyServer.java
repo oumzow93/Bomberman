@@ -7,18 +7,26 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.ListIterator;
+
+import controleur.AbstractController;
+import controleur.ControllerBombermanGame;
+import modele.BombermanGame;
+
 
 
 
 public class MyServer extends Thread {
 	private ArrayList<Echange> clients = new ArrayList<>();
-	private int ID_CLIENT;
+	private static int ID_CLIENT=0;
+	private static AbstractController controller;
+	private static String requetteServeur="DEPLACEMENT;STOP";
+	
 
 
 
 	public MyServer() {
-		this.ID_CLIENT=0;
+		
+	    
 	}
 
 	public void run() {
@@ -29,8 +37,8 @@ public class MyServer extends Thread {
 			//=========================================BOUCLE INFINI POUR CONNECTER PLUSIEUR CLIENT
 			while(true) {
 				Socket client =server.accept();
-				++this.ID_CLIENT;
-				Echange ech= new Echange(client,this.ID_CLIENT);
+				++ID_CLIENT;
+				Echange ech= new Echange(client,ID_CLIENT);
 				this.clients.add(ech);
 				ech.start();
 
@@ -52,71 +60,70 @@ public class MyServer extends Thread {
 		}
 
 		//============================================BRODCASTING====================================
-		public void broadcast(String message) {
+		public void broadcast(String message , Socket client) {
 
 
-			ListIterator<Echange>iter = clients.listIterator();
-
-			while(iter.hasNext()) {
-				Echange echange= iter.next();
+			for(Echange echange:clients) {
 				try {
 					PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
-					if(!message.equals("null") || !message.equals(null) ) {
-						System.out.println(message);
-						sortie.println(message);
-					}
-					else {
-						System.out.println("DECONNEXION DE CLIENT: "+this.id_client);
-						iter.remove();
-						
-					}
+                   if(!message.equals("null") || !message.equals(null)) {
+                	   String [] infomessage= message.split(";");
+                	   if(infomessage[0].equals("CONNEXION")) {
+                		   if(echange.getClient().equals(client)) {
+                			   sortie.println("DEMARAGE");
+                		   }
+                	   }else {
+                    	   MyServer.gestionRequetteClient(message);
+       					   sortie.println(requetteServeur);
+                		   
+                	   }
 
-
+                   }
+					
 					sortie.flush();
 
 				} catch (IOException e) {
 					e.printStackTrace();
-				}catch (NullPointerException e) {
-					//System.out.println("Problème : " + e.getMessage());
 				}
+
 			}
-
-
 
 		}
 		@Override
 		public void run() {
+			String IPadr= client.getRemoteSocketAddress().toString();
+			System.out.println("CONNEXION DU CLIENT : "+this.id_client+" avec IP: "+IPadr);
 			try {
 				BufferedReader  entree = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-
-				String IPadr= client.getRemoteSocketAddress().toString();
-				System.out.println("CONNEXION DU CLIENT : "+this.id_client+" avec IP: "+IPadr);
-
-
+				
 				while(true) {
 					//=================SORTIE
-					String reponse =  entree.readLine();
-					broadcast(reponse);
-
-
-
+					String reponse =entree.readLine();
+					broadcast(reponse,client);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}catch (NullPointerException e) {
+				System.out.println("DECONNEXION DU CLIENT :"+this.id_client+" avec IP: "+IPadr);
+				clients.remove(this);
+				--ID_CLIENT;
+				
+				if(ID_CLIENT==0) {
+					controller.getGame().init();
+				}
+
+				
+				
 			}
 
-
-
-
 		}
-
+		
 
 		public Socket getClient() {
 			return client;
 		}
-
+        
 
 
 		public int getId_client() {
@@ -129,11 +136,70 @@ public class MyServer extends Thread {
 
 
 	}
+	//=====================================GESTION DES REQUETTE VENANT DU CLIENT 
+	public  static void gestionRequetteClient(String requette) {
+		String []infoRequette = requette.split(";");
+		String entete =infoRequette[0];
+		String info = infoRequette[1];
+		switch(entete) {
+		case "COMMANDE": 
+			if(info.equals("PLAY")) {
+				controller.play();
+			}
+			if(info.equals("Pause")) {
+				controller.pause();
+			}
+			if(info.equals("STEP")) {
+				controller.step();
+			}
+			if(info.equals("RESTART")) {
+				controller.restart();
+			}
+			break;
 
+		case "DEPLACEMENT": 
+			if(info.equals("HAUT") || info.equals("BAS") || info.equals("GAUCHE") || info.equals("DROITE")) {
+				controller.step();
+				
+			}break;
+		}
+		requetteServeur= "UPDATE_TURN;"+controller.getGame().getTurn();
+	}
+
+
+
+	public static String getRequetteServeur() {
+		return requetteServeur;
+	}
+
+	public static void setRequetteServeur(String requetteServeur) {
+		MyServer.requetteServeur = requetteServeur;
+	}
+
+
+
+	public static AbstractController getController() {
+		return controller;
+	}
+
+	public static void setController(AbstractController controller) {
+		MyServer.controller = controller;
+	}
+	
+	
+	
+	
+	
 	//=========================================================MAIN============================================
 	public static void main(String[] args) {
 		new MyServer().start();
+		
+		BombermanGame game = new BombermanGame(1000,"../layouts/niveau3.lay");
+		ControllerBombermanGame controlleer = new ControllerBombermanGame(game);
+		MyServer.setController(controlleer);
 
 	}
 
+
 }
+
