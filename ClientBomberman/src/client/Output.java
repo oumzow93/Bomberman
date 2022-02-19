@@ -21,13 +21,12 @@ public class Output extends Thread {
 			PrintWriter output = new PrintWriter(this.client.getOutputStream(),true);
 
 			while(true) {
-
+                 
 				if(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
 					System.out.println(requete);
 					output.println(Output.getRequete());
 					Output.setRequetePrecedent(getRequete());
 				}
-
 				output.flush();
 
 			}

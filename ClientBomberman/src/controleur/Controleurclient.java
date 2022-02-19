@@ -1,12 +1,13 @@
 package controleur;
 
+import client.Input;
 import client.Output;
 import vue.ViewBombermanGame;
 
 public class Controleurclient {
 	
 	private static ViewBombermanGame vue;
-	
+	 public static int compteur=0;
 	
 	
 
@@ -19,14 +20,14 @@ public class Controleurclient {
 	}
 	
 	public static void play() {
-		Output.setRequete("COMMANDE;PLAY");
+		Output.setRequete("COMMANDE;PLAY;"+Input.getGetTrun());
 		vue.getCommande().getPause().setEnabled(true);
 		vue.getCommande().getRestart().setEnabled(true);
 		vue.getCommande().getStep().setEnabled(false);
 		vue.getCommande().getPlay().setEnabled(false);
 	}
 	public static void step() {
-		Output.setRequete("COMMANDE;STEP");
+		Output.setRequete("COMMANDE;STEP;"+Input.getGetTrun());
 		vue.getCommande().getPause().setEnabled(false);
 		vue.getCommande().getRestart().setEnabled(true);
 		vue.getCommande().getStep().setEnabled(true);
