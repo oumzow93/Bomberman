@@ -114,12 +114,21 @@ public class Authentification {
 }
 */
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.*;
+
+import client.Output;
 
 //import com.sun.tools.sjavac.comp.dependencies.PublicApiCollector;
 public class Authentification extends JFrame {
 	JPanel panHaut,panBas;
+	private JButton valider;
+
+	private JTextField login;
+	private JTextField password;
 	public Authentification() {
 		//initialisation du JFrame
 		super();
@@ -132,10 +141,14 @@ public class Authentification extends JFrame {
 		contenu.add(panHaut,BorderLayout.NORTH);
 		contenu.add(panBas,BorderLayout.SOUTH);
 		panHaut.add(new JLabel("username"));
-		panHaut.add(new JTextField());
+		this.login = new JTextField();
+		panHaut.add(login);
+		
 		panHaut.add(new JLabel("password"));
-		panHaut.add(new JTextField());
-		panBas.add(new JButton("connexion"));
+		this.password=new  JTextField();
+		panHaut.add(password);
+		this.valider=new JButton("connexion");
+		panBas.add(this.valider);
 		panBas.add(new JButton("cancel"));
 		panHaut.setBorder(new TitledBorder("authentification"));
 		Border b = BorderFactory.createLineBorder(Color.blue.darker(),5);
@@ -143,9 +156,43 @@ public class Authentification extends JFrame {
 		panBas.setBorder(b);
 		
 		
+		//==============================================EVENEMENT SUR LE BOUTON VALIDER
+				this.valider.addActionListener(new ActionListener() {
+
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String usname= login.getText();
+						String pass = password.getText();
+
+
+
+
+						if(!usname.equals("") && !pass.equals("")) {
+							String requete = "CONNEXION;"+usname+";"+pass;
+							Output.setRequete(requete);
+							//this.setVisible(false);
+
+
+
+
+						}
+
+
+					}
+
+					
+				});
+
+			}
+				 
+		
+		
 	}
 	
-}
+	
+
+
 
 
 
