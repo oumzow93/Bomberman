@@ -12,9 +12,9 @@ import agent.FactoryAgent;
 import agent.Position;
 import objets.Bomb;
 import objets.Item;
+
 import strategies.DeplacementAreatoire;
-
-
+import strategies.DeplacementClavier;
 import strategies.StrategieBird;
 import utils.AgentAction;
 
@@ -34,7 +34,7 @@ public class BombermanGame extends Game {
 	private ArrayList<AgentPNJ>listPNJ = new ArrayList<>();
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private ArrayList<Item> items= new ArrayList<>();
-	private boolean modeInteractif;
+	
 	
 	private boolean fin_du_jeu;
 	
@@ -62,7 +62,7 @@ public class BombermanGame extends Game {
 		this.bombs.clear();
 		this.items.clear();
 		AgentBomberman.setIdCouleur();
-		this.modeInteractif= false;
+		
 		this.setFin_du_jeu(true);
 		
 		this.victoire= false;
@@ -412,22 +412,14 @@ public class BombermanGame extends Game {
 
 	
 	@Override
-	public void takeTurn() {
-		;
-		
+	public void takeTurn() {		
 
 		
        //=============================DEPALCEMENT DES BOMBERMAN==========		
 		for(int i=0; i< this.listBomberman.size();i++) {
 			AgentBomberman agent  = this.listBomberman.get(i);
-			if(this.modeInteractif) {
-				agent.setStrategie(new DeplacementAreatoire(this));
-				
-			}else {
-				agent.setStrategie(new DeplacementAreatoire(this));
-				
-			}
 			
+			agent.setStrategie(new  DeplacementClavier(this));
 			this.objectsSpecieux(agent);
 			
 		}
@@ -460,6 +452,7 @@ public class BombermanGame extends Game {
 			}
 				
 		}
+		//MyServer.setRequetteServeur(this.donneMiseAjour());
 		finDuJeu();
 		
 	}
@@ -497,9 +490,7 @@ public class BombermanGame extends Game {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	public void setModeInteractif() {
-		 this.modeInteractif=true;
-	}
+
 
 
 	public int getScore() {

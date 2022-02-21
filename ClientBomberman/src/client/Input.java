@@ -15,6 +15,7 @@ public class Input  extends Thread{
 
 	private Socket client;
 	private  ViewBombermanGame  viewGame;
+	private static String reponseprecedent="";
 
 	public Input(Socket client) {
 		super();
@@ -26,15 +27,18 @@ public class Input  extends Thread{
 
 	@Override
 	public void run() {
+
 		try {
 			BufferedReader input = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 
 			while (true) {
-				String reponse ;
-				
-				while((reponse = input.readLine())!=null)  {
+				String reponse = input.readLine() ;
+				while(!reponse.equals(reponseprecedent)) {
+
 					gestionRequetteServeur(reponse);
+					Input.setReponseprecedent(reponse);
 				}
+
 			}
 
 
@@ -45,20 +49,18 @@ public class Input  extends Thread{
 		}
 
 	}
-	
-	
+
 	public  void gestionRequetteServeur(String requette) {
 		if(requette.equals("DEMARAGE")) {
 			this.viewGame.afficher();
-			
+
 		}else {
-			String []infoRequette = requette.split(";");
+			String []infoRequette = requette.split(":");
 			String entete =infoRequette[0];
-			String info = infoRequette[1];
+			String turn = infoRequette[1];
 			switch(entete) {
-			case "UPDATE_TURN": 
-				
-				Controleurclient.setTurn(info);
+			case "UPDATE": 
+				Controleurclient.setTurn(turn);
 				this.viewGame.actualiser();
 				break;	
 			}
@@ -73,6 +75,16 @@ public class Input  extends Thread{
 
 	public ViewBombermanGame getViewGame() {
 		return viewGame;
+	}
+
+
+	public static String getReponseprecedent() {
+		return reponseprecedent;
+	}
+
+
+	public static void setReponseprecedent(String reponseprecedent) {
+		Input.reponseprecedent = reponseprecedent;
 	}
 
 

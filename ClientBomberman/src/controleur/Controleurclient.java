@@ -7,8 +7,8 @@ import vue.ViewBombermanGame;
 public class Controleurclient {
 	
 	private static ViewBombermanGame vue;
-	public static int compteur=0;
-	private static String turn;
+
+	private static String turn="";
 	
 	
 
@@ -17,14 +17,15 @@ public class Controleurclient {
 		vue = v;
 		vue.getCommande().getPause().setEnabled(false);
 		vue.getCommande().getRestart().setEnabled(false);
-		vue.getCommande().getPlay().setEnabled(false);
+		
 		
 	}
 	
 	public static void play() {
 		Output.setRequete("COMMANDE;PLAY;"+turn);
-		vue.getCommande().getPause().setEnabled(false);
+		vue.getCommande().getPause().setEnabled(true);
 		vue.getCommande().getRestart().setEnabled(true);
+		vue.getCommande().getPlay().setEnabled(false);
 		vue.getCommande().getStep().setEnabled(false);
 		
 	}
@@ -33,14 +34,14 @@ public class Controleurclient {
 		vue.getCommande().getPause().setEnabled(false);
 		vue.getCommande().getRestart().setEnabled(true);
 		vue.getCommande().getStep().setEnabled(true);
-		vue.getCommande().getPlay().setEnabled(false);
+		vue.getCommande().getPlay().setEnabled(true);
 	}
 	public static void pause() {
 		Output.setRequete("COMMANDE;PAUSE;"+turn);
 		vue.getCommande().getPause().setEnabled(false);
 		vue.getCommande().getRestart().setEnabled(true);
 		vue.getCommande().getStep().setEnabled(true);
-		vue.getCommande().getPlay().setEnabled(false);
+		vue.getCommande().getPlay().setEnabled(true);
 	}
 	
 	public static void restart() {
@@ -48,7 +49,7 @@ public class Controleurclient {
 		vue.getCommande().getPause().setEnabled(false);
 		vue.getCommande().getRestart().setEnabled(false);
 		vue.getCommande().getStep().setEnabled(true);
-		vue.getCommande().getPlay().setEnabled(false);
+		vue.getCommande().getPlay().setEnabled(true);
 	}
 
 

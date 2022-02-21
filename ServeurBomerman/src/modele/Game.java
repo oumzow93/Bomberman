@@ -7,6 +7,7 @@ import agent.AgentBomberman;
 import agent.AgentPNJ;
 import objets.Bomb;
 import objets.Item;
+import serveur.MyServer;
 import utils.AgentAction;
 
 
@@ -46,7 +47,6 @@ public abstract class Game implements Runnable {
 	public abstract  ArrayList<Item> getItems();
 	
 	public abstract void setFileName(String fileName);
-	public abstract void setModeInteractif() ;
 	public abstract  int getScore() ;
 	public abstract int getNbVies() ;
 	
@@ -81,6 +81,7 @@ public abstract class Game implements Runnable {
 	public void setTime (long time)
 	{
 		this.time= time;
+		MyServer.setRequetteServeur(this.donneMiseAjour());
 		
 	}
 	
@@ -95,23 +96,25 @@ public abstract class Game implements Runnable {
 		this.turn=0;
 		this.isRunning=true;
 		this.initializeGame();
+		MyServer.setRequetteServeur(this.donneMiseAjour());
 		
 		
 	}
 	public void step() {
 		//this.turn++;
 		if(this.gameContinue() && this.turn<this.maxturn) {
-			++this.turn;
+			this.turn++;
 			this.takeTurn();
 		}else {
 			this.isRunning=false;
-			//this.gameOver();
+			
 		}
+		MyServer.setRequetteServeur(this.donneMiseAjour());
 		
 	}
 	public void pause() {
 		this.isRunning=false;
-		
+		MyServer.setRequetteServeur(this.donneMiseAjour());
 	}
 	public void run() {
 		do {
@@ -122,7 +125,7 @@ public abstract class Game implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			MyServer.setRequetteServeur(this.donneMiseAjour());
 		}while(this.isRunning);
 		
 	}
@@ -134,8 +137,14 @@ public abstract class Game implements Runnable {
 		
 	}
 	
-	//*************************************AJOUTER OBERVATEUR 
-
+	//**********************METHODE POUR REMPLACER  ET RECUPERE TOU LES DONNE MISE EN JOUR DANS LE JEU POUR L'ENVOYER AU CLIENT 
+	public  String donneMiseAjour() {
+		
+		String donnee = "UPDATE:";
+		//1: NOMBRE DE TOURS 
+		donnee+=getTurn();		
+		return donnee;
+	}
 		
 	
 

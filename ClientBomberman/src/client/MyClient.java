@@ -17,12 +17,14 @@ public class MyClient {
 		try {
 			
 			Socket client = new Socket("localhost",5000);
-			
-			Input input   = new Input(client);
 			Output output = new Output(client);
+			Input input   = new Input(client);
 			
-			input.start();
+			
+			
 			output.start();
+			input.start();
+			
 			
 			
 			authen =new Authentification();

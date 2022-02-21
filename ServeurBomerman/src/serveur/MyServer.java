@@ -19,14 +19,16 @@ public class MyServer extends Thread {
 	private ArrayList<Echange> clients = new ArrayList<>();
 	private static int ID_CLIENT=0;
 	private static AbstractController controller;
-	private static String requetteServeur="DEPLACEMENT;STOP";
-	
+	private static String requetteServeur="";
+	private static String requetteClient;
+	private static String requettPrecedent="";
+
 
 
 
 	public MyServer() {
-		
-	    
+
+
 	}
 
 	public void run() {
@@ -61,25 +63,44 @@ public class MyServer extends Thread {
 
 		//============================================BRODCASTING====================================
 		public void broadcast(String message , Socket client) {
-
+		
 
 			for(Echange echange:clients) {
 				try {
 					PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
-                   if(!message.equals("null") || !message.equals(null)) {
-                	   String [] infomessage= message.split(";");
-                	   if(infomessage[0].equals("CONNEXION")) {
-                		   if(echange.getClient().equals(client)) {
-                			   sortie.println("DEMARAGE");
-                		   }
-                	   }else {
-                		   MyServer.gestionRequetteClient(message);
-                		   sortie.println(requetteServeur);
-                		   
-                	   }
+					if(!message.equals("null")   &&  !message.equals(null)) {
 
-                   }
-					
+						if(message.contains("CONNEXION") && echange.getClient().equals(client) ) {
+
+							sortie.println("DEMARAGE");
+							
+
+						}else {
+							if(message.contains("PLAY")) {
+								controller.play();								
+							}
+							if(message.contains("PAUSE")) {
+								controller.pause();
+								
+							}
+							if(message.contains("STEP")) {
+								controller.step();
+								
+							}
+							if(message.contains("RESTART")) {
+								controller.restart();
+								
+							}
+							while(!requetteServeur.equals(requettPrecedent)) {
+								sortie.println(requetteServeur);
+								System.out.println(requetteServeur);
+								MyServer.setRequettPrecedent(requetteServeur);
+							}
+							
+						}
+						
+
+					}
 					sortie.flush();
 
 				} catch (IOException e) {
@@ -95,11 +116,12 @@ public class MyServer extends Thread {
 			System.out.println("CONNEXION DU CLIENT : "+this.id_client+" avec IP: "+IPadr);
 			try {
 				BufferedReader  entree = new BufferedReader(new InputStreamReader(client.getInputStream()));
-				
+
 				while(true) {
 					//=================SORTIE
 					String reponse =entree.readLine();
 					broadcast(reponse,client);
+					MyServer.setRequetteClient(reponse);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -108,22 +130,22 @@ public class MyServer extends Thread {
 				System.out.println("DECONNEXION DU CLIENT :"+this.id_client+" avec IP: "+IPadr);
 				clients.remove(this);
 				--ID_CLIENT;
-				
+
 				if(ID_CLIENT==0) {
-					controller.getGame().init();
+					controller.restart();
 				}
 
-				
-				
+
+
 			}
 
 		}
-		
+
 
 		public Socket getClient() {
 			return client;
 		}
-        
+
 
 
 		public int getId_client() {
@@ -155,16 +177,10 @@ public class MyServer extends Thread {
 			if(info.equals("RESTART")) {
 				controller.restart();
 			}
-			break;
-
-		case "DEPLACEMENT": 
-			if(info.equals("HAUT") || info.equals("BAS") || info.equals("GAUCHE") || info.equals("DROITE")) {
-				controller.step();
-				;
-			}break;
 		}
-		requetteServeur= "UPDATE_TURN;"+controller.getGame().getTurn();
-		
+
+
+
 	}
 
 
@@ -186,19 +202,35 @@ public class MyServer extends Thread {
 	public static void setController(AbstractController controller) {
 		MyServer.controller = controller;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	//=========================================================MAIN============================================
 	public static void main(String[] args) {
 		new MyServer().start();
-		
-		BombermanGame game = new BombermanGame(1000,"../layouts/niveau3.lay");
+
+		BombermanGame game = new BombermanGame(100,"../layouts/niveau3.lay");
 		ControllerBombermanGame controlleer = new ControllerBombermanGame(game);
 		MyServer.setController(controlleer);
 
+	}
+
+	public static String getRequetteClient() {
+		return requetteClient;
+	}
+
+	public static void setRequetteClient(String requetteClient) {
+		MyServer.requetteClient = requetteClient;
+	}
+
+	public static String getRequettPrecedent() {
+		return requettPrecedent;
+	}
+
+	public static void setRequettPrecedent(String requettPrecedent) {
+		MyServer.requettPrecedent = requettPrecedent;
 	}
 
 
