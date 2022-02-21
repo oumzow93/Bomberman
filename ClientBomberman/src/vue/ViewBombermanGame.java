@@ -27,7 +27,7 @@ public class ViewBombermanGame {
 		
 		
 		try {
-			InputMap carte = new InputMap("/home/etud/M1_INFO/S2/ProgramReseux/Bomberman/ClientBomberman/layouts/niveau1.lay");
+			InputMap carte = new InputMap("./layouts/niveau1.lay");
 			
 			int sizeX=  carte.getSizeX();
 			int sizeY  = carte.getSizeY();
