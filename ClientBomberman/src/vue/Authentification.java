@@ -126,6 +126,7 @@ import client.Output;
 public class Authentification extends JFrame {
 	JPanel panHaut,panBas;
 	private JButton valider;
+	private JButton cancel;
 
 	private JTextField login;
 	private JTextField password;
@@ -149,7 +150,8 @@ public class Authentification extends JFrame {
 		panHaut.add(password);
 		this.valider=new JButton("connexion");
 		panBas.add(this.valider);
-		panBas.add(new JButton("cancel"));
+		this.cancel=new JButton("cancel");
+		panBas.add(cancel);
 		panHaut.setBorder(new TitledBorder("authentification"));
 		Border b = BorderFactory.createLineBorder(Color.blue.darker(),5);
 		this.setVisible(true);
@@ -177,6 +179,30 @@ public class Authentification extends JFrame {
 
 
 						}
+
+
+					}
+
+					
+				});
+				
+				this.cancel.addActionListener(new ActionListener() {
+
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String usname= login.getText();
+						String pass = password.getText();
+
+							//String requete = "CONNEXION;"+usname+";"+pass;
+							//Output.setRequete(requete);
+							//this.setVisible(false);
+							dispose();
+
+
+
+
+						
 
 
 					}
