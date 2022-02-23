@@ -130,10 +130,5 @@ public class AgentBomberman  extends Agent{
 		}
 	}
 
-	@Override
-	public String toString() {
-		return  super.toString()+"," + couleur ;
-	}
-
 
 }

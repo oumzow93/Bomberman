@@ -15,24 +15,29 @@ public class Input  extends Thread{
 
 	private Socket client;
 	private  ViewBombermanGame  viewGame;
-	private  static String getTrun= "";
+	private static String reponseprecedent="";
 
 	public Input(Socket client) {
 		super();
 		this.client = client;
-		this.viewGame= new ViewBombermanGame();
-		new Controleurclient(this.viewGame);
+
 	}
 
 
 	@Override
 	public void run() {
+
 		try {
 			BufferedReader input = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 
 			while (true) {
-				String reponse = input.readLine();
-				gestionRequetteServeur(reponse);
+				String reponse ;
+				
+				while((reponse=input.readLine())!=null) {
+					gestionRequetteServeur(reponse);
+
+				}
+
 			}
 
 
@@ -43,25 +48,101 @@ public class Input  extends Thread{
 		}
 
 	}
-	
-	
+
 	public  void gestionRequetteServeur(String requette) {
-		if(requette.equals("DEMARAGE")) {
+		if(requette.startsWith("DEMARAGE")) {
+			String []infoRequette = requette.split(":");
+			Controleurclient.setTurn(infoRequette[1]);
+			this.recupTilleCarte(infoRequette[2]);
+			this.recupBomberman(infoRequette[3]);
+			this.recupPnj(infoRequette[4]);
+
+			this.viewGame= new ViewBombermanGame();
+			new Controleurclient(this.viewGame);
 			this.viewGame.afficher();
-			
+
 		}else {
-			String []infoRequette = requette.split(";");
-			String entete =infoRequette[0];
-			String info = infoRequette[1];
-			switch(entete) {
-			case "UPDATE_TURN": 
-				Input.setGetTrun(info);
+			if(requette.startsWith("UPDATE")) {
+				String []infoRequette = requette.split(":");
+				Controleurclient.setTurn(infoRequette[1]);
+				this.recupTilleCarte(infoRequette[2]);
+				this.recupBomberman(infoRequette[3]);
+				this.recupPnj(infoRequette[4]);
+
 				this.viewGame.actualiser();
-				//break;
-					
 			}
+
 		}
 
+	}
+
+	public void recupTilleCarte(String taille) {
+
+		if(!taille.isEmpty() && taille.length()>=2) {
+			String []tailleRecup = taille.split(";");
+			String []mataille  = tailleRecup[1].split("&");
+			if(mataille.length==2) {
+				Controleurclient.setSizeX(Integer.parseInt(mataille[0]) );
+				Controleurclient.setSizeY(Integer.parseInt(mataille[1]) );
+			}
+
+		}else{
+			System.out.println("taille : donnees manquante");
+		}
+	}
+	public void recupBomberman(String donnee) {
+		Controleurclient.getListBomberman().clear();
+		String bomberman[] = donnee.split(";");
+
+		if(bomberman[1].contains("&") ) {
+			String bomber[] = bomberman[1].split("&");
+			for( int i=0;i <bomber.length;i++) {
+				String attribut[] = bomber[i].split(",");
+				int x= Integer.parseInt(attribut[0]);
+				int y= Integer.parseInt(attribut[1]);
+				int d= Integer.parseInt(attribut[2]);
+				int c= Integer.parseInt(attribut[4]);
+				Controleurclient.setListBomberman(x, y, d, c);
+
+			}
+		}else {
+
+			String attribut[] = bomberman[1].split(",");
+			int x= Integer.parseInt(attribut[0]);
+			int y= Integer.parseInt(attribut[1]);
+			int d= Integer.parseInt(attribut[2]);
+			int c= Integer.parseInt(attribut[4]);
+			Controleurclient.setListBomberman(x, y, d, c);
+		}
+
+
+
+	}
+	public void recupPnj(String donnee) {
+		Controleurclient.getListPNJ().clear();
+		String pnj[] = donnee.split(";");
+
+		if(pnj[1].contains("&") ) {
+			String bomber[] = pnj[1].split("&");
+			for( int i=0;i <bomber.length;i++) {
+				String attribut[] = bomber[i].split(",");
+				int x= Integer.parseInt(attribut[0]);
+				int y= Integer.parseInt(attribut[1]);
+				int d= Integer.parseInt(attribut[2]);
+				char t=  attribut[3].charAt(0);
+				Controleurclient.setListPNJ(x,y, d, t);
+
+			}
+		}else {
+
+			String attribut[] = pnj[1].split(",");
+			int x= Integer.parseInt(attribut[0]);
+			int y= Integer.parseInt(attribut[1]);
+			int d= Integer.parseInt(attribut[2]);
+			char t=  attribut[3].charAt(0);
+			Controleurclient.setListPNJ(x,y, d, t);
+		}
+		
 	}
 
 	public Socket getClient() {
@@ -74,14 +155,17 @@ public class Input  extends Thread{
 	}
 
 
-	public static String getGetTrun() {
-		return getTrun;
+	public static String getReponseprecedent() {
+		return reponseprecedent;
 	}
 
 
-	public static void setGetTrun(String getTrun) {
-		Input.getTrun = getTrun;
+	public static void setReponseprecedent(String reponseprecedent) {
+		Input.reponseprecedent = reponseprecedent;
 	}
+
+
+
 
 
 

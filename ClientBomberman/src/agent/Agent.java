@@ -1,12 +1,12 @@
 package agent;
 
-import strategies.IStrategie;
+
 
 public abstract class  Agent {
 	Position position;
 	
 	int direction;
-	IStrategie strategie;
+	
 
 	public Agent(Position poistion) {
 		super();
@@ -29,18 +29,10 @@ public abstract class  Agent {
 	
 
 	
-	//======================================== STRETEGIES
 
-	public IStrategie getStrategie() {
-		return strategie;
-	}
  
 	
 	//===================== USE STRATEGY
-	public void setStrategie(IStrategie strategie) {
-		this.strategie = strategie;
-		this.strategie.getAction(this);
-	}
 	
 	//=========================================ACCESSEUR ET SUCCESSEUR
 
@@ -50,11 +42,6 @@ public abstract class  Agent {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
-	}
-
-	@Override
-	public String toString() {
-		return  position + "," + direction + ","+this.typeAgent();
 	}
 
 	

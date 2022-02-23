@@ -13,7 +13,7 @@ public class ControllerBombermanGame implements AbstractController {
 	public ControllerBombermanGame(Game game) {
 		super();
 		this.game = game;
-		this.game.initializeGame();
+		this.game.init();
 		
 	}
 
