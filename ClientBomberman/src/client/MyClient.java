@@ -22,6 +22,8 @@ public class MyClient {
 			
 			
 			
+			
+			
 			output.start();
 			input.start();
 			

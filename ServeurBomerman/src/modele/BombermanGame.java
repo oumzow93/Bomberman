@@ -12,7 +12,7 @@ import agent.FactoryAgent;
 import agent.Position;
 import objets.Bomb;
 import objets.Item;
-
+import serveur.MyServer;
 import strategies.DeplacementAreatoire;
 import strategies.DeplacementClavier;
 import strategies.StrategieBird;
@@ -34,6 +34,10 @@ public class BombermanGame extends Game {
 	private ArrayList<AgentPNJ>listPNJ = new ArrayList<>();
 	private ArrayList<Bomb> bombs = new ArrayList<>();
 	private ArrayList<Item> items= new ArrayList<>();
+	private boolean [][]start_breakable_walls;
+	private boolean [][]walls;
+	private int sizeX;
+	private int sizeY;
 	
 	
 	private boolean fin_du_jeu;
@@ -90,6 +94,25 @@ public class BombermanGame extends Game {
 			
 		}
 		
+		this.setSizeX(this.carrte.getSizeX());
+		this.setSizeY(this.carrte.getSizeY());
+		this.start_breakable_walls = new boolean[this.sizeX][this.sizeY];
+		this.walls= new boolean[this.sizeX][this.sizeY];
+		
+		for(int i=0;i<this.sizeX;i++) {
+			for(int j=0;j<this.sizeY;j++) {
+				this.start_breakable_walls[i][j]= this.carrte.getStart_breakable_walls()[i][j];
+			}
+		}
+		
+		//this.setStart_breakable_walls(this.carrte.getStart_breakable_walls());
+		this.setWalls(this.carrte.get_walls());
+		
+
+		//System.out.println(this.donneMiseAjour());
+		
+		MyServer.setRequetteServeur(this.donneMiseAjour());
+		
 		System.out.println("initialisation du jeu\n");		
 	}
 
@@ -129,19 +152,19 @@ public class BombermanGame extends Game {
 		int x= agent.getPosition().getX();
 		int y= agent.getPosition().getY();
 		
-		//boolean [][]breakable_walls =this.carrte.getStart_breakable_walls();
+		//boolean [][]breakable_walls =start_breakable_walls;
 		
 		if(agent.typeAgent()!='V') {
-			if( action== AgentAction.MOVE_LEFT && (this.carrte.getStart_breakable_walls() [x-1][y]==true || this.carrte.get_walls()[x-1][y]==true)) {
+			if( action== AgentAction.MOVE_LEFT && (start_breakable_walls [x-1][y]==true || walls[x-1][y]==true)) {
 				return false;
 			}
-			if( action== AgentAction.MOVE_RIGHT &&( this.carrte.getStart_breakable_walls() [x+1][y]==true || this.carrte.get_walls()[x+1][y]==true)) {
+			if( action== AgentAction.MOVE_RIGHT &&( start_breakable_walls [x+1][y]==true || walls[x+1][y]==true)) {
 				return false;
 			}
-			if( action== AgentAction.MOVE_DOWN && (this.carrte.getStart_breakable_walls() [x][y-1]==true || this.carrte.get_walls()[x][y-1]==true)) {
+			if( action== AgentAction.MOVE_DOWN && (start_breakable_walls [x][y-1]==true || walls[x][y-1]==true)) {
 				return false;
 			}
-			if( action== AgentAction.MOVE_UP && (this.carrte.getStart_breakable_walls() [x][y+1]==true || this.carrte.get_walls()[x][y+1]==true)) {
+			if( action== AgentAction.MOVE_UP && (start_breakable_walls [x][y+1]==true || walls[x][y+1]==true)) {
 				return false;
 			}
 			return true;
@@ -329,7 +352,7 @@ public class BombermanGame extends Game {
 		//===================destruction des mures
 		for(int i =x1; i<=x2;i++) {
 			if( (i>0 && i<this.getCarrte().getSizeX()-1)  ) {
-				if(this.carrte.getStart_breakable_walls()[i][y]==true) {
+				if(start_breakable_walls[i][y]==true) {
 					if(itemGeration==1) {
 						this.items.add(new Item(new Position(i,y),itemType));
 					}
@@ -346,7 +369,7 @@ public class BombermanGame extends Game {
 		
 		for(int i =y1; i<=y2;i++) {
 			if( (i>0 && i<this.getCarrte().getSizeY()-1)  ) {
-				if(this.carrte.getStart_breakable_walls()[x][i]==true) {
+				if(start_breakable_walls[x][i]==true) {
 					if(itemGeration==1) {
 						this.items.add(new Item(new Position(x,i),itemType));
 					}
@@ -419,14 +442,14 @@ public class BombermanGame extends Game {
 		for(int i=0; i< this.listBomberman.size();i++) {
 			AgentBomberman agent  = this.listBomberman.get(i);
 			
-			agent.setStrategie(new  DeplacementClavier(this));
+			agent.setStrategie(new DeplacementAreatoire(this));
 			this.objectsSpecieux(agent);
 			
 		}
 		//==============================DEPACLEMENT DES MECHANT
 		for(int i=0; i<this.listPNJ.size();i++) {			
 			Agent agent  = this.listPNJ.get(i);
-			this.tuerBombermane(agent);
+			//this.tuerBombermane(agent);
 			if(agent.typeAgent()=='V') {
 				agent.setStrategie(new StrategieBird(this));
 			}
@@ -436,7 +459,7 @@ public class BombermanGame extends Game {
 			
 			
 		}
-		for( Bomb bom : this.bombs) {
+		/*for( Bomb bom : this.bombs) {
 			bom.exploision(this.getTime());
 			if(bom.getStatue()==4) {
 				this.effetExplosion(bom);
@@ -452,7 +475,7 @@ public class BombermanGame extends Game {
 			}
 				
 		}
-		//MyServer.setRequetteServeur(this.donneMiseAjour());
+		//MyServer.setRequetteServeur(this.donneMiseAjour());*/
 		finDuJeu();
 		
 	}
@@ -530,6 +553,46 @@ public class BombermanGame extends Game {
 
 	public void setFin_du_jeu(boolean fin_du_jeu) {
 		this.fin_du_jeu = fin_du_jeu;
+	}
+
+
+	public boolean [][] getStart_breakable_walls() {
+		return start_breakable_walls;
+	}
+
+
+	public void setStart_breakable_walls(boolean [][] start_breakable_walls) {
+		this.start_breakable_walls = start_breakable_walls;
+	}
+
+
+	public boolean [][] getWalls() {
+		return walls;
+	}
+
+
+	public void setWalls(boolean [][] walls) {
+		this.walls = walls;
+	}
+
+
+	public int getSizeX() {
+		return sizeX;
+	}
+
+
+	public void setSizeX(int sizeX) {
+		this.sizeX = sizeX;
+	}
+
+
+	public int getSizeY() {
+		return sizeY;
+	}
+
+
+	public void setSizeY(int sizeY) {
+		this.sizeY = sizeY;
 	}
 
 

@@ -17,15 +17,15 @@ public class Clavier extends JFrame implements KeyListener {
 		
 		switch(event.getKeyCode()) {
 		case KeyEvent.VK_NUMPAD8: 
-			Output.setRequete("DEPLACEMENT;HAUT;"+(++compteur)); break;
+			Output.setRequete("DEPLACEMENT:HAUT:"+(++compteur)); break;
 		case KeyEvent.VK_NUMPAD2: 
-			Output.setRequete("DEPLACEMENT;BAS;"+(++compteur)); break;
+			Output.setRequete("DEPLACEMENT:BAS:"+(++compteur)); break;
 		case KeyEvent.VK_NUMPAD4: 
-			Output.setRequete("DEPLACEMENT;GAUCHE;"+(++compteur)); break;
+			Output.setRequete("DEPLACEMENT:GAUCHE:"+(++compteur)); break;
 		case KeyEvent.VK_NUMPAD6: 
-			Output.setRequete("DEPLACEMENT;DROITE;"+(++compteur)); break;
+			Output.setRequete("DEPLACEMENT:DROITE:"+(++compteur)); break;
 		
-		default : Output.setRequete("DEPLACEMENT;STOP"+(++compteur)); break;
+		default : Output.setRequete("DEPLACEMENT:STOP:"+(++compteur)); break;
 		
 		}
 		

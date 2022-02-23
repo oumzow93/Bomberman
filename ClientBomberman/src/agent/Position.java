@@ -3,7 +3,7 @@ package agent;
 public class Position {
 	@Override
 	public String toString() {
-		return  x + "," + y;
+		return "Position [x=" + x + ", y=" + y + "]";
 	}
 
 	private int  x;

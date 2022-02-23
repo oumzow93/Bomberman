@@ -68,11 +68,13 @@ public class MyServer extends Thread {
 			for(Echange echange:clients) {
 				try {
 					PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
-					if(!message.equals("null")   &&  !message.equals(null)) {
+					if(!message.equals("null")   &&  !message.equals(null) ) {
 
 						if(message.contains("CONNEXION") && echange.getClient().equals(client) ) {
-
-							sortie.println("DEMARAGE");
+							
+							
+							MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "DEMARAGE:")); 
+							//sortie.println(MyServer.getRequetteServeur() );
 							
 
 						}else {
@@ -91,11 +93,14 @@ public class MyServer extends Thread {
 								controller.restart();
 								
 							}
-							while(!requetteServeur.equals(requettPrecedent)) {
-								sortie.println(requetteServeur);
-								System.out.println(requetteServeur);
-								MyServer.setRequettPrecedent(requetteServeur);
-							}
+
+							
+						}
+						while(!requetteServeur.equals(null) && !requetteServeur.equals(getRequettPrecedent()) ) {
+							
+							sortie.println(requetteServeur);
+							System.out.println(requetteServeur);
+							MyServer.setRequettPrecedent(requetteServeur);
 							
 						}
 						
@@ -209,10 +214,13 @@ public class MyServer extends Thread {
 
 	//=========================================================MAIN============================================
 	public static void main(String[] args) {
-		new MyServer().start();
+		
 
-		BombermanGame game = new BombermanGame(100,"../layouts/niveau3.lay");
+		BombermanGame game = new BombermanGame(100,"../layouts/niveau1.lay");
 		ControllerBombermanGame controlleer = new ControllerBombermanGame(game);
+		
+		
+		new MyServer().start();
 		MyServer.setController(controlleer);
 
 	}

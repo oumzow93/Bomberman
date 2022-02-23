@@ -65,7 +65,7 @@ public class Authentification {
 				String pass = password.getText();
 				
 				if(!usname.equals("") && !pass.equals("")) {
-					String requete = "CONNEXION;"+usname+";"+pass;
+					String requete = "CONNEXION:"+usname+":"+pass;
 					Output.setRequete(requete);
 					fenetre.setVisible(false);
 					
