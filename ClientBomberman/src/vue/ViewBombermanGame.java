@@ -246,8 +246,6 @@ public class ViewBombermanGame {
 			 case 4: bomb = new InfoBomb(x,y,range,StateBomb.Boom); break;
 			 
 			 }
-			 
-			
 			 bombs.add(bomb);
 		}
 

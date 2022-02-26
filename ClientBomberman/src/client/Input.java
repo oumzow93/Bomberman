@@ -230,15 +230,17 @@ public class Input  extends Thread{
 					String[]attribut= lesbomb[i].split(",");
 					int x= Integer.parseInt(attribut[0]);
 					int y= Integer.parseInt(attribut[1]);
-					int r= Integer.parseInt(attribut[2]);
-					Controleurclient.setBombs(x, y, r);
+					int s= Integer.parseInt(attribut[2]);
+					int r= Integer.parseInt(attribut[3]);
+					Controleurclient.setBombs(x, y,s, r);
 				}
 			}else {
 				String[]attribut= bomb[1].split(",");
 				int x= Integer.parseInt(attribut[0]);
 				int y= Integer.parseInt(attribut[1]);
-				int r= Integer.parseInt(attribut[2]);
-				Controleurclient.setBombs(x, y, r);
+				int s= Integer.parseInt(attribut[2]);
+				int r= Integer.parseInt(attribut[3]);
+				Controleurclient.setBombs(x, y,s, r);
 				
 			}
 			

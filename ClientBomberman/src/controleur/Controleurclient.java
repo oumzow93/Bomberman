@@ -160,8 +160,9 @@ public class Controleurclient {
 		return bombs;
 	}
 
-	public static void setBombs(int x, int y, int range) {
+	public static void setBombs(int x, int y, int statut, int range) {
 		Bomb bomb = new Bomb (new Position(x,y));
+		bomb.setStatue(statut);
 		bomb.setRange(range);
 		Controleurclient.bombs.add(bomb);
 	}
