@@ -71,7 +71,9 @@ public class Input  extends Thread{
 				this.recupBomberman(infoRequette[3]);
 				this.recupPnj(infoRequette[4]);
 				this.recupBreakbleWalls(infoRequette[5]);
-			   this.recupBomb(infoRequette[7]);
+				this.recupBomb(infoRequette[7]);
+				this.recupItem(infoRequette[8]);
+
 
 				this.viewGame.actualiser();
 			}
@@ -158,7 +160,7 @@ public class Input  extends Thread{
 
 		}else {
 			System.out.println("PAS D'AGENT PNJ");
-			
+
 		}
 
 
@@ -169,12 +171,16 @@ public class Input  extends Thread{
 		for(int i=0;i< Controleurclient.getSizeX();i++) {
 			for(int j=0; j<Controleurclient.getSizeY();j++) {
 				start_breakable_walls[i][j]=false;
+				
 			}
 		}
-		String breakablewall[] = donnee.split(";");
 		
+		Controleurclient.setStart_breakable_walls(start_breakable_walls);
+		
+		String breakablewall[] = donnee.split(";");
+
 		if(breakablewall.length>1) {
-			
+
 			String coordonnees[]=breakablewall[1].split("&");
 			for(int i=0; i<coordonnees.length;i++) {
 				String []coordonnee =coordonnees[i].split(",");
@@ -185,7 +191,7 @@ public class Input  extends Thread{
 			}
 
 			Controleurclient.setStart_breakable_walls(start_breakable_walls);
-			
+
 		}
 
 
@@ -211,7 +217,7 @@ public class Input  extends Thread{
 			}
 
 			Controleurclient.setWalls(walls);
-			
+
 		}
 
 
@@ -222,7 +228,7 @@ public class Input  extends Thread{
 		Controleurclient.getBombs().clear();
 		String []bomb = donnee.split(";");
 		System.out.println(donnee);
-		
+
 		if(bomb.length>1) {
 			if(bomb[1].contains("&")) {
 				String[] lesbomb = bomb[1].split("&");
@@ -241,15 +247,48 @@ public class Input  extends Thread{
 				int s= Integer.parseInt(attribut[2]);
 				int r= Integer.parseInt(attribut[3]);
 				Controleurclient.setBombs(x, y,s, r);
-				
+
 			}
-			
+
 		}else {
 			//System.out.println("PAS DE BOMB");
 		}
 
 
 	}
+	public void recupItem(String  donnee) {
+		Controleurclient.getItems().clear();
+		String []item = donnee.split(";");
+		System.out.println(item);
+
+		if(item.length>1) {
+			if(item[1].contains("&")) {
+				String[] lesitems = item[1].split("&");
+				for(int i=0; i<lesitems.length;i++) {
+					String[]attribut= lesitems[i].split(",");
+					int x= Integer.parseInt(attribut[0]);
+					int y= Integer.parseInt(attribut[1]);
+					int t= Integer.parseInt(attribut[2]);
+
+					Controleurclient.setItems(x,y,t);
+				}
+			}else {
+				String[]attribut= item[1].split(",");
+				int x= Integer.parseInt(attribut[0]);
+				int y= Integer.parseInt(attribut[1]);
+				int t= Integer.parseInt(attribut[2]);
+
+				Controleurclient.setItems(x,y,t);
+
+			}
+
+		}else {
+			//System.out.println("PAS DE BOMB");
+		}
+	}
+
+
+
 
 	public Socket getClient() {
 		return client;

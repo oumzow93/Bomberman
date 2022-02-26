@@ -354,7 +354,7 @@ public class BombermanGame extends Game {
 					if(itemGeration==1) {
 						this.items.add(new Item(new Position(i,y),itemType));
 					}
-					this.getCarrte().getStart_breakable_walls()[i][y]=false;
+					this.getStart_breakable_walls()[i][y]=false;
 
 				}
 
@@ -371,7 +371,7 @@ public class BombermanGame extends Game {
 					if(itemGeration==1) {
 						this.items.add(new Item(new Position(x,i),itemType));
 					}
-					this.getCarrte().getStart_breakable_walls()[x][i]=false;
+					this.getStart_breakable_walls()[x][i]=false;
 					
 				}
 				
@@ -459,7 +459,7 @@ public class BombermanGame extends Game {
 		}
 		for( Bomb bom : this.bombs) {
 			bom.explosion();
-			if(bom.Aexploser()) {
+			if(bom.getStatue()==4) {
 				this.effetExplosion(bom);
 			}
 		}

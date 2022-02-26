@@ -96,8 +96,8 @@ public class Authentification extends JFrame {
 					
 				});
 
-			}
-				 
+			
+	}	 
 		
 		
 	}
@@ -116,7 +116,6 @@ public class Authentification extends JFrame {
 
 
 
-<<<<<<< HEAD
-}
-=======
->>>>>>> cleint_serveur
+
+
+

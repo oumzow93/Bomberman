@@ -10,7 +10,7 @@ public class AgentBomberman  extends Agent{
 	private boolean peutPoserBomb;
 	private boolean estMalade;
 	private int rangeBom;
-	public  static int nombre_de_vies=5;
+	public  static int nombre_de_vies=4;
 
 	public AgentBomberman(Position poistion) {
 		super(poistion);
@@ -19,7 +19,7 @@ public class AgentBomberman  extends Agent{
 		this.estInvincible=false;
 		this.estMalade=false;
 		this.peutPoserBomb=true;
-		this.rangeBom=1;
+		this.rangeBom=5;
 	}
 
 	@Override

@@ -18,7 +18,6 @@ public class Bomb {
 		super();
 		this.setPoistion(poistion);
 		this.statue=0;
-		this.setRange(5);
 		this.setAgent(0);
 	}
 
