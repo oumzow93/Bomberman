@@ -458,8 +458,8 @@ public class BombermanGame extends Game {
 			
 		}
 		for( Bomb bom : this.bombs) {
-			bom.exploision(this.getTime());
-			if(bom.getStatue()==4) {
+			bom.explosion();
+			if(bom.Aexploser()) {
 				this.effetExplosion(bom);
 			}
 		}

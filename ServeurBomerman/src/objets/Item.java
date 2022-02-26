@@ -3,6 +3,10 @@ package objets;
 import agent.Position;
 
 public class Item {
+	@Override
+	public String toString() {
+		return  p + "," + typeItem ;
+	}
 	private Position p;
 	private int typeItem;
 	
