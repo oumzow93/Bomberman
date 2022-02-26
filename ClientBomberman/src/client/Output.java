@@ -9,6 +9,7 @@ public class Output extends Thread {
 	private Socket client;
 	private static String requete= "";
 	private static String requetePrecedent="";
+	
 	public Output(Socket client) {
 		super();
 		this.client = client;

@@ -11,6 +11,8 @@ import agent.PNJ_Ennemi;
 import agent.PNJ_Rajion;
 import agent.Position;
 import client.Output;
+import objets.Bomb;
+import objets.Item;
 import vue.ViewBombermanGame;
 
 public class Controleurclient {
@@ -19,6 +21,9 @@ public class Controleurclient {
 	private static String turn="";
 	private static ArrayList<AgentBomberman> listBomberman = new ArrayList<>();
 	private static ArrayList<AgentPNJ>listPNJ = new ArrayList<>();
+	
+	private static ArrayList<Bomb> bombs = new ArrayList<>();
+	private static ArrayList<Item> items= new ArrayList<>();
 	private static boolean [][]start_breakable_walls;
 	private static boolean [][]walls;
 	private static int sizeX;
@@ -115,21 +120,9 @@ public class Controleurclient {
 	   }
 	}
 
-	public static boolean [][] getStart_breakable_walls() {
-		return start_breakable_walls;
-	}
 
-	public static void setStart_breakable_walls(int x, int y) {
-		start_breakable_walls[x][y]=true;
-	}
 
-	public boolean [][] getWalls() {
-		return walls;
-	}
 
-	public static void setWalls(int x, int y) {
-		walls[x][y]= true;
-	}
 
 	public static int getSizeX() {
 		return sizeX;
@@ -145,6 +138,40 @@ public class Controleurclient {
 
 	public static void setSizeY(int Y) {
 		sizeY = Y;
+	}
+
+	public static boolean [][] getStart_breakable_walls() {
+		return start_breakable_walls;
+	}
+
+	public static void setStart_breakable_walls(boolean [][] start_breakable_walls) {
+		Controleurclient.start_breakable_walls = start_breakable_walls;
+	}
+
+	public static boolean [][] getWalls() {
+		return walls;
+	}
+
+	public static void setWalls(boolean [][] walls) {
+		Controleurclient.walls = walls;
+	}
+
+	public static ArrayList<Bomb> getBombs() {
+		return bombs;
+	}
+
+	public static void setBombs(int x, int y, int range) {
+		Bomb bomb = new Bomb (new Position(x,y));
+		bomb.setRange(range);
+		Controleurclient.bombs.add(bomb);
+	}
+
+	public static ArrayList<Item> getItems() {
+		return items;
+	}
+
+	public static void setItems(ArrayList<Item> items) {
+		Controleurclient.items = items;
 	}
 
 

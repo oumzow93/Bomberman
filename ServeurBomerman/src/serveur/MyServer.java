@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-
 import controleur.AbstractController;
 import controleur.ControllerBombermanGame;
 import modele.BombermanGame;
@@ -16,7 +15,7 @@ import modele.BombermanGame;
 
 
 public class MyServer extends Thread {
-	private ArrayList<Echange> clients = new ArrayList<>();
+	private static ArrayList<Echange> clients = new ArrayList<>();
 	private static int ID_CLIENT=0;
 	private static AbstractController controller;
 	private static String requetteServeur="";
@@ -30,7 +29,19 @@ public class MyServer extends Thread {
 
 
 	}
-
+	public static void send() {
+		for (Echange echange:clients) {
+			try {
+				PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
+				sortie.println(MyServer.requetteServeur);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
 	public void run() {
 		try {
 			@SuppressWarnings("resource")
@@ -41,7 +52,7 @@ public class MyServer extends Thread {
 				Socket client =server.accept();
 				++ID_CLIENT;
 				Echange ech= new Echange(client,ID_CLIENT);
-				this.clients.add(ech);
+				clients.add(ech);
 				ech.start();
 
 			}
@@ -52,7 +63,7 @@ public class MyServer extends Thread {
 
 
 	//=======================================CLASSE POUR LA GESTION DES ENTRÉES ET SORTIES===============
-	public class Echange extends Thread{
+	public static class Echange extends Thread{
 		private int id_client;
 		private Socket client;
 		public Echange(Socket client, int id_client) {
@@ -63,50 +74,44 @@ public class MyServer extends Thread {
 
 		//============================================BRODCASTING====================================
 		public void broadcast(String message , Socket client) {
-		
+
 
 			for(Echange echange:clients) {
 				try {
 					PrintWriter sortie= new PrintWriter (echange.getClient().getOutputStream(),true);
-					if(!message.equals("null")   &&  !message.equals(null) ) {
+					if(!message.equals("null")   &&  !message.equals(null)  ) {
 
-						if(message.contains("CONNEXION") && echange.getClient().equals(client) ) {
-							
-							
+						if(message.startsWith("CONNEXION") && echange.getClient().equals(client) ) {
+
+
 							MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "DEMARAGE:")); 
-							//sortie.println(MyServer.getRequetteServeur() );
-							
+							sortie.println(MyServer.getRequetteServeur() );
 
-						}else {
-							if(message.contains("PLAY")) {
-								controller.play();								
-							}
-							if(message.contains("PAUSE")) {
-								controller.pause();
-								
-							}
-							if(message.contains("STEP")) {
-								controller.step();
-								
-							}
-							if(message.contains("RESTART")) {
-								controller.restart();
-								
+
+						}else if(message.startsWith("COMMANDE")) {
+							String[]commande = message.split(":");
+
+							switch(commande[1]) {
+							case "PLAY":controller.play();	break;
+							case "PAUSE":controller.pause(); break;
+							case "STEP":controller.step(); break;
+							case "RESTART": controller.restart(); break;
+
 							}
 
-							
+							//MyServer.setRequettPrecedent(requetteServeur);
+						}else if(message.startsWith("DEPLACEMENT")) {
+							MyServer.setRequetteServeur("DEPLACEMENT"); 
+							MyServer.setRequetteClient(message);
 						}
-						while(!requetteServeur.equals(null) && !requetteServeur.equals(getRequettPrecedent()) ) {
-							
-							sortie.println(requetteServeur);
-							System.out.println(requetteServeur);
-							MyServer.setRequettPrecedent(requetteServeur);
-							
-						}
-						
+
+
+
+
+						sortie.flush();
 
 					}
-					sortie.flush();
+
 
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -125,8 +130,11 @@ public class MyServer extends Thread {
 				while(true) {
 					//=================SORTIE
 					String reponse =entree.readLine();
+
+					System.out.println(reponse);
 					broadcast(reponse,client);
-					MyServer.setRequetteClient(reponse);
+
+					
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -164,7 +172,7 @@ public class MyServer extends Thread {
 
 	}
 	//=====================================GESTION DES REQUETTE VENANT DU CLIENT 
-	public  static void gestionRequetteClient(String requette) {
+	/*public  static void gestionRequetteClient(String requette) {
 		String []infoRequette = requette.split(";");
 		String entete =infoRequette[0];
 		String info = infoRequette[1];
@@ -186,7 +194,7 @@ public class MyServer extends Thread {
 
 
 
-	}
+	}*/
 
 
 
@@ -214,12 +222,12 @@ public class MyServer extends Thread {
 
 	//=========================================================MAIN============================================
 	public static void main(String[] args) {
-		
+
 
 		BombermanGame game = new BombermanGame(100,"../layouts/niveau1.lay");
 		ControllerBombermanGame controlleer = new ControllerBombermanGame(game);
-		
-		
+
+
 		new MyServer().start();
 		MyServer.setController(controlleer);
 

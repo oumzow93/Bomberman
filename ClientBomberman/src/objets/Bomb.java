@@ -6,8 +6,6 @@ import java.util.TimerTask;
 import agent.Position;
 
 public class Bomb {
-
-
 	private Position poistion;
 	private int statue;
 	private int range;
@@ -103,10 +101,6 @@ public class Bomb {
 		this.agent = agent;
 	}
 	
-	@Override
-	public String toString() {
-		return  poistion + ","+range ;
-	}
 	
 
 }

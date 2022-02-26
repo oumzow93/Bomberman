@@ -13,76 +13,40 @@ import javax.swing.JFrame;
 import agent.AgentBomberman;
 import agent.AgentPNJ;
 import controleur.Controleurclient;
-import models.InputMap;
-
+import objets.Bomb;
 import utils.AgentAction;
 import utils.ColorAgent;
 import utils.InfoAgent;
 import utils.InfoBomb;
 import utils.InfoItem;
+import utils.StateBomb;
 
 public class ViewBombermanGame {
 	private PanelBomberman panelBonberman;
 	private  ViewCommand  commande;
 	private JFrame frame;
+	private InfoBomb bomb;
 
 
 
 	public ViewBombermanGame() {
 
 
-
-		try {
-			InputMap carte = new InputMap("./layouts/niveau1.lay");
-
-			int sizeX=  carte.getSizeX();
-			int sizeY  = carte.getSizeY();
-			boolean [][]wall = carte.get_walls();
-			boolean [][]breakable_walls = carte.getStart_breakable_walls();
-			ArrayList<InfoAgent> infoAgent = new ArrayList<>();
-			System.out.println(Controleurclient.getListBomberman().size());
-
-			for( AgentBomberman Bomberman: Controleurclient.getListBomberman()) {
-				int x= Bomberman.getPosition().getX();
-				int y= Bomberman.getPosition().getY();
-				char type= Bomberman.typeAgent();
-				int  action= Bomberman.getDirection();
-
-				InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,this.getCouleur(Bomberman.getCouleur()),Bomberman.isInvincible(),Bomberman.isEstMalade());
-				infoAgent.add(inf_a);
-
-			}
-			
-		    for(AgentPNJ pnj: Controleurclient.getListPNJ()) {
-		    	int x= pnj.getPosition().getX();
-		    	int y= pnj.getPosition().getY();
-		    	char type= pnj.typeAgent();
-		    	int action = pnj.getDirection();
-		    
-		    	InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,ColorAgent.DEFAULT,false,false);
-		    	infoAgent.add(inf_a);
-		    	
-		    }
-
-
-			this.panelBonberman= new PanelBomberman(sizeX,sizeY,wall,breakable_walls,infoAgent);
-			this.frame = new JFrame("Bomberman");
-			this.frame.setSize(900, 450);
-			this.frame.setLayout(new BorderLayout(0,2));
+		this.panelBonberman=  this.InitPanelBonberman();
+		this.frame = new JFrame("Bomberman");
+		this.frame.setSize(900, 450);
+		this.frame.setLayout(new BorderLayout(0,2));
 
 
 
-			Dimension windowSize = frame.getSize();
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			Point centerPoint = ge.getCenterPoint();
-			int dx = centerPoint.x = windowSize.width / 2 ;
-			int dy = centerPoint.y = windowSize.height / 2 - 350;
-			frame.setLocation(dx, dy);
-			frame.add(this.panelBonberman,BorderLayout.CENTER);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Dimension windowSize = frame.getSize();
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Point centerPoint = ge.getCenterPoint();
+		int dx = centerPoint.x = windowSize.width / 2 ;
+		int dy = centerPoint.y = windowSize.height / 2 - 350;
+		frame.setLocation(dx, dy);
+		frame.add(this.panelBonberman,BorderLayout.CENTER);
+
 
 
 		commande  = new ViewCommand ();
@@ -103,7 +67,7 @@ public class ViewBombermanGame {
 
 
 
-
+       //==================================ACTION SUR LES BOUTON DE COMMANDES
 
 		//*******************************BUTTON PLAY
 		this.commande.getPlay().addActionListener(new ActionListener() {
@@ -113,11 +77,6 @@ public class ViewBombermanGame {
 
 			}
 		});
-
-
-
-
-
 
 
 		//*****************************BOUTON PAUSE
@@ -145,6 +104,45 @@ public class ViewBombermanGame {
 
 
 
+
+	}
+
+
+
+	//=============================INIT PANELE BOMBERMAN (RECUPERATION DES DONNÉES INITIAL ENVOYER PAR LE SERVEUR AU TOURS 0)
+
+	public PanelBomberman InitPanelBonberman() {
+
+
+
+		boolean [][]wall =  Controleurclient.getWalls();
+		boolean [][]breakable_walls = Controleurclient.getStart_breakable_walls();
+		ArrayList<InfoAgent> infoAgent = new ArrayList<>();
+		int sizeX = Controleurclient.getSizeX();
+		int sizeY = Controleurclient.getSizeY();
+
+		for( AgentBomberman Bomberman: Controleurclient.getListBomberman()) {
+			int x= Bomberman.getPosition().getX();
+			int y= Bomberman.getPosition().getY();
+			char type= Bomberman.typeAgent();
+			int  action= Bomberman.getDirection();
+
+			InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,this.getCouleur(Bomberman.getCouleur()),Bomberman.isInvincible(),Bomberman.isEstMalade());
+			infoAgent.add(inf_a);
+
+		}
+
+		for(AgentPNJ pnj: Controleurclient.getListPNJ()) {
+			int x= pnj.getPosition().getX();
+			int y= pnj.getPosition().getY();
+			char type= pnj.typeAgent();
+			int action = pnj.getDirection();
+
+			InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,ColorAgent.DEFAULT,false,false);
+			infoAgent.add(inf_a);
+
+		}
+		return new PanelBomberman(sizeX,sizeY,wall,breakable_walls,infoAgent);
 
 	}
 
@@ -193,20 +191,24 @@ public class ViewBombermanGame {
 		commande.affichier();
 	}
 
+	
+	
+	
+	//===================================ACTILIATION DU PANAU A CHAQUE TOURS DU JEAU
 
 	public  void actualiser() {
 		this.commande.UpdateTurn(Controleurclient.getTurn());
-		//System.out.println(Controleurclient.getSizeX()+","+Controleurclient.getSizeY());
+		
 
 
 
 
-		boolean [][]breakable_walls = new boolean [Controleurclient.getSizeX()][Controleurclient.getSizeX()];
+		boolean [][]breakable_walls = Controleurclient.getStart_breakable_walls();
 		ArrayList<InfoAgent> infoAgent = new ArrayList<>();
 		ArrayList<InfoBomb> bombs  = new ArrayList<>();
 		ArrayList<InfoItem> items = new ArrayList<>();
 		
-		
+		//=================================================== MISE A JOURS DES AJENTS
 		for( AgentBomberman Bomberman: Controleurclient.getListBomberman()) {
 			int x= Bomberman.getPosition().getX();
 			int y= Bomberman.getPosition().getY();
@@ -217,16 +219,37 @@ public class ViewBombermanGame {
 			infoAgent.add(inf_a);
 
 		}
-	    for(AgentPNJ pnj: Controleurclient.getListPNJ()) {
-	    	int x= pnj.getPosition().getX();
-	    	int y= pnj.getPosition().getY();
-	    	char type= pnj.typeAgent();
-	    	int action = pnj.getDirection();
-	    
-	    	InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,ColorAgent.DEFAULT,false,false);
-	    	infoAgent.add(inf_a);
-	    	
-	    }
+		for(AgentPNJ pnj: Controleurclient.getListPNJ()) {
+			int x= pnj.getPosition().getX();
+			int y= pnj.getPosition().getY();
+			char type= pnj.typeAgent();
+			int action = pnj.getDirection();
+
+			InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,ColorAgent.DEFAULT,false,false);
+			infoAgent.add(inf_a);
+
+		}
+		
+		
+		//============================================ MISE A JOUR DES BOMBS
+		for (Bomb b: Controleurclient.getBombs()) {
+			 int x= b.getPosition().getX();
+			 int y= b.getPosition().getY();
+			 int range = b.getRange();
+			 
+			 
+			 switch(b.getStatue()) {
+			 case 0:  bomb = new InfoBomb(x,y,range,StateBomb.Step0); break;
+			 case 1:  bomb = new InfoBomb(x,y,range,StateBomb.Step1); break;
+			 case 2:  bomb = new InfoBomb(x,y,range,StateBomb.Step2); break;
+			 case 3: bomb = new InfoBomb(x,y,range,StateBomb.Step3); break;
+			 case 4: bomb = new InfoBomb(x,y,range,StateBomb.Boom); break;
+			 
+			 }
+			 
+			
+			 bombs.add(bomb);
+		}
 
 
 

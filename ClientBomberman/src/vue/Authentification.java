@@ -83,8 +83,6 @@ public class Authentification extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						String usname= login.getText();
-						String pass = password.getText();
 						dispose();
 
 

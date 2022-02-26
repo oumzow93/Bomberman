@@ -12,9 +12,7 @@ import agent.FactoryAgent;
 import agent.Position;
 import objets.Bomb;
 import objets.Item;
-import serveur.MyServer;
 import strategies.DeplacementAreatoire;
-import strategies.DeplacementClavier;
 import strategies.StrategieBird;
 import utils.AgentAction;
 
@@ -111,7 +109,7 @@ public class BombermanGame extends Game {
 
 		//System.out.println(this.donneMiseAjour());
 		
-		MyServer.setRequetteServeur(this.donneMiseAjour());
+		//MyServer.setRequetteServeur(this.donneMiseAjour());
 		
 		System.out.println("initialisation du jeu\n");		
 	}
@@ -449,7 +447,7 @@ public class BombermanGame extends Game {
 		//==============================DEPACLEMENT DES MECHANT
 		for(int i=0; i<this.listPNJ.size();i++) {			
 			Agent agent  = this.listPNJ.get(i);
-			//this.tuerBombermane(agent);
+			this.tuerBombermane(agent);
 			if(agent.typeAgent()=='V') {
 				agent.setStrategie(new StrategieBird(this));
 			}
@@ -459,7 +457,7 @@ public class BombermanGame extends Game {
 			
 			
 		}
-		/*for( Bomb bom : this.bombs) {
+		for( Bomb bom : this.bombs) {
 			bom.exploision(this.getTime());
 			if(bom.getStatue()==4) {
 				this.effetExplosion(bom);
