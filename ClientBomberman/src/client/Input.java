@@ -247,13 +247,11 @@ public class Input  extends Thread{
 				int y= Integer.parseInt(attribut[1]);
 				int s= Integer.parseInt(attribut[2]);
 				int r= Integer.parseInt(attribut[3]);
-<<<<<<< Updated upstream
-				Controleurclient.setBombs(x, y,s, r);
 
-=======
+				Controleurclient.setBombs(x, y,s, r);
 				Controleurclient.setBombs(x,y,s,r);
 				
->>>>>>> Stashed changes
+
 			}
 
 		}else {

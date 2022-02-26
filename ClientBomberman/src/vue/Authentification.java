@@ -117,8 +117,4 @@ public class Authentification extends JFrame {
 
 
 
-<<<<<<< Updated upstream
 
-
-=======
->>>>>>> Stashed changes
