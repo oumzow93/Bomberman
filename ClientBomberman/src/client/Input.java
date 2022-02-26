@@ -167,6 +167,7 @@ public class Input  extends Thread{
 
 	}
 	public void recupBreakbleWalls(String donnee) {
+		
 		boolean [][]start_breakable_walls = new boolean[Controleurclient.getSizeX()][Controleurclient.getSizeY()];
 		for(int i=0;i< Controleurclient.getSizeX();i++) {
 			for(int j=0; j<Controleurclient.getSizeY();j++) {
@@ -238,7 +239,7 @@ public class Input  extends Thread{
 					int y= Integer.parseInt(attribut[1]);
 					int s= Integer.parseInt(attribut[2]);
 					int r= Integer.parseInt(attribut[3]);
-					Controleurclient.setBombs(x, y,s, r);
+					Controleurclient.setBombs(x, y,s,r);
 				}
 			}else {
 				String[]attribut= bomb[1].split(",");
@@ -246,8 +247,13 @@ public class Input  extends Thread{
 				int y= Integer.parseInt(attribut[1]);
 				int s= Integer.parseInt(attribut[2]);
 				int r= Integer.parseInt(attribut[3]);
+<<<<<<< Updated upstream
 				Controleurclient.setBombs(x, y,s, r);
 
+=======
+				Controleurclient.setBombs(x,y,s,r);
+				
+>>>>>>> Stashed changes
 			}
 
 		}else {
