@@ -136,7 +136,10 @@ public abstract class Game implements Runnable {
 			this.isRunning=false;
 			
 		}
+		//System.out.println("pas");
 		MyServer.setRequetteServeur(this.donneMiseAjour());
+		MyServer.send();
+		
 		
 	}
 	public void pause() {
@@ -243,11 +246,19 @@ public abstract class Game implements Runnable {
 		} 
 		donnee+=walls;
 		
-		
-        
-       // System.out.println(donnee);
-        
-        
+		//7 = LES BOMB
+		donnee+=":BOMB;";
+		String bomb="";
+		for(int i=0;i< this.getBombs().size();i++) {
+			if(i<this.getBombs().size()-1) {
+				bomb+=this.getBombs().get(i).toString()+"&";
+			}else {
+				bomb+=this.getBombs().get(i).toString();	
+			}
+			
+		}
+		//System.out.println(bomb);
+		donnee+=bomb;      
         
 		return donnee;
 	}
