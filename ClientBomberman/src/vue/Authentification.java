@@ -86,11 +86,6 @@ public class Authentification extends JFrame {
 						dispose();
 
 
-
-
-						
-
-
 					}
 
 					
