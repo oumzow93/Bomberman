@@ -75,7 +75,13 @@ public class Input  extends Thread{
 				this.recupItem(infoRequette[8]);
 
 
-				this.viewGame.actualiser();
+				
+				try {
+					this.viewGame.actualiser();
+					
+				}catch(java.lang.NullPointerException e) {
+					System.out.println("UN CLIENT A REJOIN LE PARTIE :"+e.getMessage());
+				}
 			}
 
 		}
@@ -228,7 +234,7 @@ public class Input  extends Thread{
 	public void recupBomb(String  donnee) {
 		Controleurclient.getBombs().clear();
 		String []bomb = donnee.split(";");
-		System.out.println(donnee);
+		
 
 		if(bomb.length>1) {
 			if(bomb[1].contains("&")) {
@@ -263,7 +269,7 @@ public class Input  extends Thread{
 	public void recupItem(String  donnee) {
 		Controleurclient.getItems().clear();
 		String []item = donnee.split(";");
-		System.out.println(item);
+		
 
 		if(item.length>1) {
 			if(item[1].contains("&")) {

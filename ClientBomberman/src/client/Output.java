@@ -24,7 +24,7 @@ public class Output extends Thread {
 			while(true) {
                  
 				if(!requete.isEmpty() && !requete.equals(requetePrecedent) && !requete.equals("null")) {
-					System.out.println(Output.getRequete());
+					//System.out.println(Output.getRequete());
 					output.println(Output.getRequete());
 					Output.setRequetePrecedent(getRequete());
 				}

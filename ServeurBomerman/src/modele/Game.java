@@ -123,6 +123,7 @@ public abstract class Game implements Runnable {
 		this.isRunning=true;
 		this.initializeGame();
 		MyServer.setRequetteServeur(this.donneMiseAjour());
+		MyServer.send();
 		
 		
 	}
@@ -273,7 +274,7 @@ public abstract class Game implements Runnable {
 						
 			}
 		}
-		System.out.println(breakable_wall);
+		
 		donnee+=item;
 		
         
