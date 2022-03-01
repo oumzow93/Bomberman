@@ -19,7 +19,7 @@ public class MyServer extends Thread {
 	private static int ID_CLIENT=0;
 	private static AbstractController controller;
 	private static String requetteServeur="";
-	private static String requetteClient;
+	private static String requetteClient="";
 	private static String requettPrecedent="";
 
 

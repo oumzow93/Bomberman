@@ -3,6 +3,7 @@ package strategies;
 import agent.Agent;
 import modele.Game;
 import serveur.MyServer;
+import utils.AgentAction;
 
 public class DeplacementClavier extends  AstracteStrtegie  implements IStrategie {
 
@@ -13,23 +14,27 @@ public class DeplacementClavier extends  AstracteStrtegie  implements IStrategie
 
 	@Override
 	public void getAction(Agent agent) {
-		if(MyServer.getRequetteClient().contains("DROITE")) {
-			new  DeplacementDroite(this.getGame());
-			System.out.print("Droite");
-		}
-		if(MyServer.getRequetteClient().contains("GAUCHE")) {
-			new  DeplacementGauche(this.getGame());
-			System.out.print("Gauche");
-		}
-		if(MyServer.getRequetteClient().contains("HAUT")) {
-			new  DeplacementHaut(this.getGame());
-			System.out.print("BAS");
-		}
-		if(MyServer.getRequetteClient().contains("BAS")) {
-			new  DeplacementBas(this.getGame());
-			System.out.print("haut");
+		if(MyServer.getRequetteClient().startsWith("DEPLACEMENT")) {
+			String [] clavier = MyServer.getRequetteClient().split(":");
+			switch(clavier[1]) {
+			case "HAUT": 
+				this.getGame().moveAgent(agent, AgentAction.MOVE_DOWN); break;
+			case "BAS":
+				this.getGame().moveAgent(agent, AgentAction.MOVE_UP); break;
+			case "GAUCHE":
+				this.getGame().moveAgent(agent, AgentAction.MOVE_LEFT); break;
+			case "DROITE":
+				this.getGame().moveAgent(agent, AgentAction.MOVE_RIGHT); break;
+			case "PUT_BOMB":
+				this.getGame().putBomb(agent);
+				default:break;
+			}
+			MyServer.setRequetteClient("stop");
 			
 		}
+			
+
+	
 	}
 
 }

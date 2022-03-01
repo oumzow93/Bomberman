@@ -171,8 +171,9 @@ public class Controleurclient {
 		return items;
 	}
 
-	public static void setItems(ArrayList<Item> items) {
-		Controleurclient.items = items;
+	public static void setItems(int x,int y, int t) {
+		Item item=new Item(new Position(x, y), t);
+		Controleurclient.items.add(item);
 	}
 
 

@@ -8,17 +8,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import agent.AgentBomberman;
 import agent.AgentPNJ;
 import controleur.Controleurclient;
 import objets.Bomb;
+import objets.Item;
 import utils.AgentAction;
 import utils.ColorAgent;
 import utils.InfoAgent;
 import utils.InfoBomb;
 import utils.InfoItem;
+import utils.ItemType;
 import utils.StateBomb;
 
 public class ViewBombermanGame {
@@ -26,6 +31,7 @@ public class ViewBombermanGame {
 	private  ViewCommand  commande;
 	private JFrame frame;
 	private InfoBomb bomb;
+	private JPanel menuJPanel;
 
 
 
@@ -39,6 +45,15 @@ public class ViewBombermanGame {
 
 
 
+		//AJOUT MENU POUR CHANGER LES NIVEAUX DU JEU
+		menuJPanel = new JPanel();
+		String s1[] = { "alone", "arene","exemple", "jeu_symetrique", "jeu1","niveau1","niveau2","niveau3" };
+
+		final JComboBox<String>  typeChaine = new JComboBox<>(s1);
+		menuJPanel.add(typeChaine);
+		JButton changerLayoutButton = new JButton("Changer de niveau");
+		menuJPanel.add(changerLayoutButton);
+
 		Dimension windowSize = frame.getSize();
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Point centerPoint = ge.getCenterPoint();
@@ -46,6 +61,9 @@ public class ViewBombermanGame {
 		int dy = centerPoint.y = windowSize.height / 2 - 350;
 		frame.setLocation(dx, dy);
 		frame.add(this.panelBonberman,BorderLayout.CENTER);
+		frame.add(menuJPanel, BorderLayout.NORTH);
+
+
 
 
 
@@ -53,6 +71,9 @@ public class ViewBombermanGame {
 		Clavier clavier = new Clavier();
 		//====================================================ACTION DU CLAVIER
 		this.frame.addKeyListener(clavier);
+
+
+
 
 		commande.getFenetreCommand().addKeyListener(clavier);
 		commande.getPause().addKeyListener(clavier);
@@ -67,7 +88,7 @@ public class ViewBombermanGame {
 
 
 
-       //==================================ACTION SUR LES BOUTON DE COMMANDES
+		//==================================ACTION SUR LES BOUTON DE COMMANDES
 
 		//*******************************BUTTON PLAY
 		this.commande.getPlay().addActionListener(new ActionListener() {
@@ -176,11 +197,24 @@ public class ViewBombermanGame {
 		return result;
 	}
 
+	public  ItemType getItem(int item) {
 
 
 
-
-
+        if(item==1) {
+            return ItemType.FIRE_UP;
+        }
+        if(item==2) {
+            return ItemType.FIRE_DOWN;
+        }
+        if(item==3) {
+            return ItemType.SKULL;
+        }
+        if(item==4) {
+            return ItemType.FIRE_SUIT;
+        }
+        return null;
+    }
 
 
 
@@ -191,14 +225,14 @@ public class ViewBombermanGame {
 		commande.affichier();
 	}
 
-	
-	
-	
+
+
+
 	//===================================ACTILIATION DU PANAU A CHAQUE TOURS DU JEAU
 
 	public  void actualiser() {
 		this.commande.UpdateTurn(Controleurclient.getTurn());
-		
+
 
 
 
@@ -207,7 +241,7 @@ public class ViewBombermanGame {
 		ArrayList<InfoAgent> infoAgent = new ArrayList<>();
 		ArrayList<InfoBomb> bombs  = new ArrayList<>();
 		ArrayList<InfoItem> items = new ArrayList<>();
-		
+
 		//=================================================== MISE A JOURS DES AJENTS
 		for( AgentBomberman Bomberman: Controleurclient.getListBomberman()) {
 			int x= Bomberman.getPosition().getX();
@@ -229,24 +263,34 @@ public class ViewBombermanGame {
 			infoAgent.add(inf_a);
 
 		}
-		
-		
+
+
 		//============================================ MISE A JOUR DES BOMBS
 		for (Bomb b: Controleurclient.getBombs()) {
-			 int x= b.getPosition().getX();
-			 int y= b.getPosition().getY();
-			 int range = b.getRange();
-			 
-			 
-			 switch(b.getStatue()) {
-			 case 0:  bomb = new InfoBomb(x,y,range,StateBomb.Step0); break;
-			 case 1:  bomb = new InfoBomb(x,y,range,StateBomb.Step1); break;
-			 case 2:  bomb = new InfoBomb(x,y,range,StateBomb.Step2); break;
-			 case 3: bomb = new InfoBomb(x,y,range,StateBomb.Step3); break;
-			 case 4: bomb = new InfoBomb(x,y,range,StateBomb.Boom); break;
-			 
-			 }
-			 bombs.add(bomb);
+			int x= b.getPosition().getX();
+			int y= b.getPosition().getY();
+			int range = b.getRange();
+
+
+			switch(b.getStatue()) {
+			case 0:  bomb = new InfoBomb(x,y,range,StateBomb.Step0); break;
+			case 1:  bomb = new InfoBomb(x,y,range,StateBomb.Step1); break;
+			case 2:  bomb = new InfoBomb(x,y,range,StateBomb.Step2); break;
+			case 3: bomb = new InfoBomb(x,y,range,StateBomb.Step3); break;
+			case 4: bomb = new InfoBomb(x,y,range,StateBomb.Boom); break;
+
+			}
+			bombs.add(bomb);
+		}
+		
+		for(Item i: Controleurclient.getItems()) {
+			int x=i.getP().getX();
+			int y = i.getP().getY();
+			int type=i.getTypeItem();
+			InfoItem item=new InfoItem(x, y, this.getItem(type));
+			items.add(item);
+			
+			
 		}
 
 

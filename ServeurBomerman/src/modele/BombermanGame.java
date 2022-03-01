@@ -13,6 +13,7 @@ import agent.Position;
 import objets.Bomb;
 import objets.Item;
 import strategies.DeplacementAreatoire;
+import strategies.DeplacementClavier;
 import strategies.StrategieBird;
 import utils.AgentAction;
 
@@ -354,7 +355,7 @@ public class BombermanGame extends Game {
 					if(itemGeration==1) {
 						this.items.add(new Item(new Position(i,y),itemType));
 					}
-					this.getCarrte().getStart_breakable_walls()[i][y]=false;
+					this.getStart_breakable_walls()[i][y]=false;
 
 				}
 
@@ -371,7 +372,7 @@ public class BombermanGame extends Game {
 					if(itemGeration==1) {
 						this.items.add(new Item(new Position(x,i),itemType));
 					}
-					this.getCarrte().getStart_breakable_walls()[x][i]=false;
+					this.getStart_breakable_walls()[x][i]=false;
 					
 				}
 				
@@ -440,7 +441,7 @@ public class BombermanGame extends Game {
 		for(int i=0; i< this.listBomberman.size();i++) {
 			AgentBomberman agent  = this.listBomberman.get(i);
 			
-			agent.setStrategie(new DeplacementAreatoire(this));
+			agent.setStrategie(new DeplacementClavier(this));
 			this.objectsSpecieux(agent);
 			
 		}
@@ -459,7 +460,7 @@ public class BombermanGame extends Game {
 		}
 		for( Bomb bom : this.bombs) {
 			bom.explosion();
-			if(bom.Aexploser()) {
+			if(bom.getStatue()==4) {
 				this.effetExplosion(bom);
 			}
 		}
