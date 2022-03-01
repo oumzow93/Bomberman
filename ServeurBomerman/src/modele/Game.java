@@ -123,6 +123,10 @@ public abstract class Game implements Runnable {
 		this.isRunning=true;
 		this.initializeGame();
 		MyServer.setRequetteServeur(this.donneMiseAjour());
+		if(!MyServer.getRequetteClient().startsWith("NIVEAU")) {
+			MyServer.send();
+		}
+		
 		
 		
 	}
@@ -189,6 +193,7 @@ public abstract class Game implements Runnable {
 			
 			
 		}
+
 		donnee+=bomberman;
 		
 		//4 LES PNJ
@@ -258,7 +263,24 @@ public abstract class Game implements Runnable {
 			
 		}
 		//System.out.println(bomb);
-		donnee+=bomb;      
+		donnee+=bomb;     
+		
+		//8 = LES ITEMS
+		donnee+=":ITEM;";
+		String item="";
+		for(int i=0;i<this.getItems().size();i++) {
+			if(i<this.getItems().size()-1) {
+				item+=this.getItems().get(i).toString()+"&";
+				
+			}
+			else {
+				item+=this.getItems().get(i).toString();
+						
+			}
+		}
+		
+		donnee+=item;
+		
         
 		return donnee;
 	}
@@ -266,4 +288,3 @@ public abstract class Game implements Runnable {
 	
 
 }
-

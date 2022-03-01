@@ -18,7 +18,7 @@ public class Bomb {
 		super();
 		this.setPoistion(poistion);
 		this.statue=0;
-		this.setRange(1);
+		this.setRange(5);
 		this.setAgent(0);
 	}
 
@@ -32,6 +32,15 @@ public class Bomb {
 
 
 	
+	public void explosion() {
+		switch(this.statue) {
+		case 0: this.setStatue(1); break;
+		case 1: this.setStatue(2); break;
+		case 2: this.setStatue(3); break;
+		case 3: this.setStatue(4); break;
+		case 4: this.setStatue(5); break;
+		}
+	}
 	
 	//===========================================EXPLOSION
 	public void exploision(long time) {
@@ -105,7 +114,7 @@ public class Bomb {
 	
 	@Override
 	public String toString() {
-		return  poistion + ","+range ;
+		return  poistion + ","+this.statue+","+this.range ;
 	}
 	
 

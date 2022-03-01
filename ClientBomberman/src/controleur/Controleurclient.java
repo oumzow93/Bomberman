@@ -28,6 +28,10 @@ public class Controleurclient {
 	private static boolean [][]walls;
 	private static int sizeX;
 	private static int sizeY;
+	private static int nombreVie =0;
+	private static int score =0;
+	private static String niveau="";
+	
 	
 	
 
@@ -37,6 +41,11 @@ public class Controleurclient {
 		vue.getCommande().getPause().setEnabled(false);
 		vue.getCommande().getRestart().setEnabled(false);
 		
+		
+	}
+	public static void init() {
+		vue.getCommande().getPause().setEnabled(false);
+		vue.getCommande().getRestart().setEnabled(false);
 		
 	}
 	
@@ -70,6 +79,9 @@ public class Controleurclient {
 		vue.getCommande().getStep().setEnabled(true);
 		vue.getCommande().getPlay().setEnabled(true);
 	}
+	public  static void changeNiveau() {
+		Output.setRequete("NIVEAU:"+Controleurclient.getNiveau()+":"+turn);
+	}
 
 
 
@@ -90,11 +102,14 @@ public class Controleurclient {
 		return listBomberman;
 	}
 
-	public static void setListBomberman(int x,int y, int direction,  int couleur) {
+	public static void setListBomberman(int x,int y, int direction,  int couleur, boolean m, boolean i) {
 		
 		AgentBomberman bomberman = new AgentBomberman(new Position(x,y));
 		bomberman.setCouleur(couleur);
 		bomberman.setDirection(direction);
+		bomberman.setEstMalade(m);
+		bomberman.setinvincible(i);
+		
 		listBomberman.add(bomberman);
 	}
 
@@ -160,8 +175,9 @@ public class Controleurclient {
 		return bombs;
 	}
 
-	public static void setBombs(int x, int y, int range) {
+	public static void setBombs(int x, int y, int statut, int range) {
 		Bomb bomb = new Bomb (new Position(x,y));
+		bomb.setStatue(statut);
 		bomb.setRange(range);
 		Controleurclient.bombs.add(bomb);
 	}
@@ -170,8 +186,33 @@ public class Controleurclient {
 		return items;
 	}
 
-	public static void setItems(ArrayList<Item> items) {
-		Controleurclient.items = items;
+	public static void setItems(int x,int y, int t) {
+		Item item=new Item(new Position(x, y), t);
+		Controleurclient.items.add(item);
+	}
+
+	public static int getNombreVie() {
+		return nombreVie;
+	}
+
+	public static void setNombreVie(int nombreVie) {
+		Controleurclient.nombreVie = nombreVie;
+	}
+
+	public static int getScore() {
+		return score;
+	}
+
+	public static void setScore(int score) {
+		Controleurclient.score = score;
+	}
+
+	public static String getNiveau() {
+		return niveau;
+	}
+
+	public static void setNiveau(String niveau) {
+		Controleurclient.niveau = niveau;
 	}
 
 
