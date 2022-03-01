@@ -338,7 +338,7 @@ public class BombermanGame extends Game {
 		Random aleatoire = new Random();
 		int itemType = aleatoire.nextInt(4)+1;
 		//int itemGeration =1;
-		int itemGeration = aleatoire.nextInt(5);
+		int itemGeration = aleatoire.nextInt(3);
 		
 		
 		int x= bom.getPosition().getX();

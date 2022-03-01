@@ -1,7 +1,6 @@
 package agent;
 
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class AgentBomberman  extends Agent{
 	private int couleur;
@@ -44,68 +43,18 @@ public class AgentBomberman  extends Agent{
 		return estMalade;
 	}
 
-	//=========================RENDRE UN OBJET MALDE PENDANT UN TEMPS 
-	public void setEstMalade(long time) {
-		Timer t = new Timer();
-	    TimerTask task = new TimerTask() {
-	        int j=1;
-	        public void run() {
-	          
-	        	estMalade=true;
-	        	peutPoserBomb= false;
-	        	
-	          try {
-	            Thread.sleep(time);
-	          } catch (InterruptedException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	          }
-	        	  
-	          if(j==10) {
-	        	  t.cancel(); 
-		        	estMalade=false;
-		        	peutPoserBomb= true;
-	          }
-	            
-	           
-	          j=j+1;
-	        }
-	      };
-	      t.schedule(task,time,time);
+		public void setEstMalade(boolean m) {
+		this.estMalade= m;
+	
 	}
 
 	public boolean isInvincible() {
 		return estInvincible;
 	}
 
-	public void setinvincible(long time) {
-		
-		Timer t = new Timer();
-	    TimerTask task = new TimerTask() {
-	        int j=1;
-	        public void run() {
-	          
-	        	estInvincible=true;
-	          try {
-	            Thread.sleep(time);
-	          } catch (InterruptedException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	          }
-	        	  
-	          if(j==10) {
-	        	  t.cancel(); 
-	        	  estInvincible=false;
-	          }
-	            
-	           
-	          j=j+1;
-	        }
-	      };
-	      t.schedule(task,time,time);
-		
-
-		
+	public void setinvincible(boolean i) {
+		this.estInvincible=i;
+			
 	}
 
 	public boolean isPeutPoserBomb() {

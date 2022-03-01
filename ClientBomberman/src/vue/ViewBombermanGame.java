@@ -249,7 +249,7 @@ public class ViewBombermanGame {
 			char type= Bomberman.typeAgent();
 			int  action= Bomberman.getDirection();
 
-			InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,this.getCouleur(Bomberman.getCouleur()),false,false);
+			InfoAgent inf_a= new InfoAgent(x,y,this.getAction(action),type,this.getCouleur(Bomberman.getCouleur()),Bomberman.isInvincible(),Bomberman.isEstMalade());
 			infoAgent.add(inf_a);
 
 		}

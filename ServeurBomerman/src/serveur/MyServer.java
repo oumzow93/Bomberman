@@ -171,30 +171,7 @@ public class MyServer extends Thread {
 
 
 	}
-	//=====================================GESTION DES REQUETTE VENANT DU CLIENT 
-	/*public  static void gestionRequetteClient(String requette) {
-		String []infoRequette = requette.split(";");
-		String entete =infoRequette[0];
-		String info = infoRequette[1];
-		switch(entete) {
-		case "COMMANDE": 
-			if(info.equals("PLAY")) {
-				controller.play();
-			}
-			if(info.equals("Pause")) {
-				controller.pause();
-			}
-			if(info.equals("STEP")) {
-				controller.step();
-			}
-			if(info.equals("RESTART")) {
-				controller.restart();
-			}
-		}
 
-
-
-	}*/
 
 
 

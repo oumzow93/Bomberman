@@ -90,11 +90,14 @@ public class Controleurclient {
 		return listBomberman;
 	}
 
-	public static void setListBomberman(int x,int y, int direction,  int couleur) {
+	public static void setListBomberman(int x,int y, int direction,  int couleur, boolean m, boolean i) {
 		
 		AgentBomberman bomberman = new AgentBomberman(new Position(x,y));
 		bomberman.setCouleur(couleur);
 		bomberman.setDirection(direction);
+		bomberman.setEstMalade(m);
+		bomberman.setinvincible(i);
+		
 		listBomberman.add(bomberman);
 	}
 

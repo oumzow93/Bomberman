@@ -115,7 +115,9 @@ public class Input  extends Thread{
 					int y= Integer.parseInt(attribut[1]);
 					int d= Integer.parseInt(attribut[2]);
 					int c= Integer.parseInt(attribut[4]);
-					Controleurclient.setListBomberman(x, y, d, c);
+					boolean ma = this.parseBoolean(attribut[5]);
+					boolean iv = this.parseBoolean(attribut[6]);
+					Controleurclient.setListBomberman(x, y, d, c,ma,iv);
 
 				}
 			}else {
@@ -125,7 +127,9 @@ public class Input  extends Thread{
 				int y= Integer.parseInt(attribut[1]);
 				int d= Integer.parseInt(attribut[2]);
 				int c= Integer.parseInt(attribut[4]);
-				Controleurclient.setListBomberman(x, y, d, c);
+				boolean ma = this.parseBoolean(attribut[5]);
+				boolean iv = this.parseBoolean(attribut[6]);
+				Controleurclient.setListBomberman(x, y, d, c,ma,iv);
 			}
 
 
@@ -298,7 +302,13 @@ public class Input  extends Thread{
 	}
 
 
-
+    public boolean parseBoolean(String chaine) {
+    	if(chaine.equals("true")) {
+    		return true;
+    	}else {
+    		return false;
+    	}
+    }
 
 	public Socket getClient() {
 		return client;
