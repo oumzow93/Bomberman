@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import controleur.AbstractController;
 import controleur.ControllerBombermanGame;
-import modele.BombermanGame;
+
 
 
 
@@ -103,6 +103,15 @@ public class MyServer extends Thread {
 						}else if(message.startsWith("DEPLACEMENT")) {
 							MyServer.setRequetteServeur("DEPLACEMENT"); 
 							MyServer.setRequetteClient(message);
+							
+						}else if(message.startsWith("NIVEAU")) {
+							String []niveau = message.split(":");
+							controller.setNiveau(niveau[1]);
+							controller.restart(); 
+							
+							MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "CHANGE_NIVEAU:")); 
+							MyServer.setRequetteClient(message);
+							
 						}
 
 
@@ -201,8 +210,8 @@ public class MyServer extends Thread {
 	public static void main(String[] args) {
 
 
-		BombermanGame game = new BombermanGame(100,"../layouts/niveau1.lay");
-		ControllerBombermanGame controlleer = new ControllerBombermanGame(game);
+		
+		ControllerBombermanGame controlleer = new ControllerBombermanGame();
 
 
 		new MyServer().start();

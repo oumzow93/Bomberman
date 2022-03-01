@@ -80,7 +80,7 @@ public class Controleurclient {
 		vue.getCommande().getPlay().setEnabled(true);
 	}
 	public  static void changeNiveau() {
-		Output.setRequete("NIVEAU:"+Controleurclient.getNiveau()+turn);
+		Output.setRequete("NIVEAU:"+Controleurclient.getNiveau()+":"+turn);
 	}
 
 

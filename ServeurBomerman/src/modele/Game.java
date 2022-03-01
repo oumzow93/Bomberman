@@ -123,7 +123,10 @@ public abstract class Game implements Runnable {
 		this.isRunning=true;
 		this.initializeGame();
 		MyServer.setRequetteServeur(this.donneMiseAjour());
-		MyServer.send();
+		if(!MyServer.getRequetteClient().startsWith("NIVEAU")) {
+			MyServer.send();
+		}
+		
 		
 		
 	}

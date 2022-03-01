@@ -63,8 +63,7 @@ public class Input  extends Thread{
 			new Controleurclient(this.viewGame);
 			this.viewGame.afficher();
 
-		}else {
-			if(requette.startsWith("UPDATE")) {
+		}else if(requette.startsWith("UPDATE")) {
 				String []infoRequette = requette.split(":");
 				Controleurclient.setTurn(infoRequette[1]);
 				this.recupTilleCarte(infoRequette[2]);
@@ -82,8 +81,18 @@ public class Input  extends Thread{
 				}catch(java.lang.NullPointerException e) {
 					System.out.println("UN CLIENT A REJOIN LE PARTIE :"+e.getMessage());
 				}
-			}
+			
 
+		}else if(requette.startsWith("CHANGE_NIVEAU")) {
+			String []infoRequette = requette.split(":");
+			Controleurclient.setTurn(infoRequette[1]);
+			this.recupTilleCarte(infoRequette[2]);
+			this.recupBomberman(infoRequette[3]);
+			this.recupPnj(infoRequette[4]);
+			this.recupBreakbleWalls(infoRequette[5]);
+			this.recupWalls(infoRequette[6]);
+			this.viewGame.changerDeNiveau();
+			
 		}
 
 	}

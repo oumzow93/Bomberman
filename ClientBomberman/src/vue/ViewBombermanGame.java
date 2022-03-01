@@ -37,8 +37,8 @@ public class ViewBombermanGame {
 	private  ViewCommand  commande;
 	private JFrame frame;
 	private InfoBomb bomb;
-	
-	
+
+
 	private JLabel NbVies;
 	private JLabel Score;
 
@@ -61,11 +61,11 @@ public class ViewBombermanGame {
 		JButton layout=new JButton("Niveua1");
 		//layout.setBackground(Color.lightGray);
 		panelMenu.add(layout);
-		
+
 		JButton modeInteractif = new JButton("Aléatoire");
 		//modeInteractif.setBackground(Color.lightGray);
 		panelMenu.add(modeInteractif);
-		
+
 		//==============PANEL POUR LES SCORE ET NOMBRE DE VIES 
 		JPanel NbV_et_Score = new JPanel();
 		Border border = BorderFactory.createRaisedBevelBorder();
@@ -74,10 +74,10 @@ public class ViewBombermanGame {
 		panelMenu.add(NbV_et_Score);
 		this.NbVies = new JLabel();
 		this.Score= new JLabel();
-		
-		  this.NbVies.setText("VIES RESTENT :"+Controleurclient.getNombreVie());
-		  this.Score.setText("  Score: "+Controleurclient.getScore());
-		
+
+		this.NbVies.setText("VIES RESTENT :"+Controleurclient.getNombreVie());
+		this.Score.setText("  Score: "+Controleurclient.getScore());
+
 		NbV_et_Score.add(this.Score);
 		NbV_et_Score.add(this.NbVies);
 
@@ -89,8 +89,8 @@ public class ViewBombermanGame {
 		frame.setLocation(dx, dy);
 		frame.add(this.panelBonberman,BorderLayout.CENTER);
 		frame.add(panelMenu, BorderLayout.NORTH);
-		
-		
+
+
 
 
 
@@ -112,21 +112,19 @@ public class ViewBombermanGame {
 		commande.getSlider().addKeyListener(clavier);
 		commande.getFenetreCommand().setFocusable(true);
 		this.frame.setFocusable(true);
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
 		//=================================================AJOUTE DES ACTION LISTNER SUR LES BOUTON DES INTERFACES
 
 		layout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evenement) {
-
-               
-
+				Controleurclient.pause();
 				String[] optionsToChoose = {"niveau1", "niveau2", "niveau3"};
 
 				String niveau = (String) JOptionPane.showInputDialog(
@@ -134,56 +132,17 @@ public class ViewBombermanGame {
 						"Selectionné votre niveau",
 						"Changement de niveau",
 						JOptionPane.QUESTION_MESSAGE,
-					    new ImageIcon("./images/B42.png"),
+						new ImageIcon("./images/B42.png"),
 						optionsToChoose,
 						optionsToChoose[2]);
 
-				System.out.println("nivau " + niveau+".lay");
+
 				Controleurclient.setNiveau(niveau);
 				Controleurclient.changeNiveau();
-				
-
-
-				frame.remove(panelBonberman);
-				frame.validate();
-
-
-
-		
-				panelBonberman=  InitPanelBonberman();
-				
-
-				frame.add(panelBonberman,BorderLayout.CENTER);
-				frame.revalidate();
-
-				panelBonberman.repaint();
-
 			}
 
 
-
-
-
-
 		});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 
 
 
@@ -225,6 +184,23 @@ public class ViewBombermanGame {
 
 
 
+
+	}
+
+	public void changerDeNiveau() {
+		
+		frame.remove(panelBonberman);
+		frame.validate();
+
+
+		panelBonberman= this.InitPanelBonberman();
+
+
+
+		frame.add(panelBonberman,BorderLayout.CENTER);
+		frame.revalidate();
+
+		panelBonberman.repaint() ;
 
 	}
 
@@ -301,20 +277,20 @@ public class ViewBombermanGame {
 
 
 
-        if(item==1) {
-            return ItemType.FIRE_UP;
-        }
-        if(item==2) {
-            return ItemType.FIRE_DOWN;
-        }
-        if(item==3) {
-            return ItemType.SKULL;
-        }
-        if(item==4) {
-            return ItemType.FIRE_SUIT;
-        }
-        return null;
-    }
+		if(item==1) {
+			return ItemType.FIRE_UP;
+		}
+		if(item==2) {
+			return ItemType.FIRE_DOWN;
+		}
+		if(item==3) {
+			return ItemType.SKULL;
+		}
+		if(item==4) {
+			return ItemType.FIRE_SUIT;
+		}
+		return null;
+	}
 
 
 
@@ -382,15 +358,15 @@ public class ViewBombermanGame {
 			}
 			bombs.add(bomb);
 		}
-		
+
 		for(Item i: Controleurclient.getItems()) {
 			int x=i.getP().getX();
 			int y = i.getP().getY();
 			int type=i.getTypeItem();
 			InfoItem item=new InfoItem(x, y, this.getItem(type));
 			items.add(item);
-			
-			
+
+
 		}
 
 
