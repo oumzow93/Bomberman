@@ -28,6 +28,10 @@ public class Controleurclient {
 	private static boolean [][]walls;
 	private static int sizeX;
 	private static int sizeY;
+	private static int nombreVie =0;
+	private static int score =0;
+	private static String niveau="";
+	
 	
 	
 
@@ -37,6 +41,11 @@ public class Controleurclient {
 		vue.getCommande().getPause().setEnabled(false);
 		vue.getCommande().getRestart().setEnabled(false);
 		
+		
+	}
+	public static void init() {
+		vue.getCommande().getPause().setEnabled(false);
+		vue.getCommande().getRestart().setEnabled(false);
 		
 	}
 	
@@ -69,6 +78,9 @@ public class Controleurclient {
 		vue.getCommande().getRestart().setEnabled(false);
 		vue.getCommande().getStep().setEnabled(true);
 		vue.getCommande().getPlay().setEnabled(true);
+	}
+	public  static void changeNiveau() {
+		Output.setRequete("NIVEAU:"+Controleurclient.getNiveau()+turn);
 	}
 
 
@@ -177,6 +189,30 @@ public class Controleurclient {
 	public static void setItems(int x,int y, int t) {
 		Item item=new Item(new Position(x, y), t);
 		Controleurclient.items.add(item);
+	}
+
+	public static int getNombreVie() {
+		return nombreVie;
+	}
+
+	public static void setNombreVie(int nombreVie) {
+		Controleurclient.nombreVie = nombreVie;
+	}
+
+	public static int getScore() {
+		return score;
+	}
+
+	public static void setScore(int score) {
+		Controleurclient.score = score;
+	}
+
+	public static String getNiveau() {
+		return niveau;
+	}
+
+	public static void setNiveau(String niveau) {
+		Controleurclient.niveau = niveau;
 	}
 
 

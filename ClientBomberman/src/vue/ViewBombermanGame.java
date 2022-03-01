@@ -3,15 +3,21 @@ package vue;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import agent.AgentBomberman;
 import agent.AgentPNJ;
@@ -31,7 +37,10 @@ public class ViewBombermanGame {
 	private  ViewCommand  commande;
 	private JFrame frame;
 	private InfoBomb bomb;
-	private JPanel menuJPanel;
+	
+	
+	private JLabel NbVies;
+	private JLabel Score;
 
 
 
@@ -46,13 +55,31 @@ public class ViewBombermanGame {
 
 
 		//AJOUT MENU POUR CHANGER LES NIVEAUX DU JEU
-		menuJPanel = new JPanel();
-		String s1[] = { "alone", "arene","exemple", "jeu_symetrique", "jeu1","niveau1","niveau2","niveau3" };
-
-		final JComboBox<String>  typeChaine = new JComboBox<>(s1);
-		menuJPanel.add(typeChaine);
-		JButton changerLayoutButton = new JButton("Changer de niveau");
-		menuJPanel.add(changerLayoutButton);
+		JPanel panelMenu = new JPanel();
+		panelMenu.setLayout(new GridLayout(1,3));
+		frame.add(panelMenu,BorderLayout.NORTH);
+		JButton layout=new JButton("Niveua1");
+		//layout.setBackground(Color.lightGray);
+		panelMenu.add(layout);
+		
+		JButton modeInteractif = new JButton("Aléatoire");
+		//modeInteractif.setBackground(Color.lightGray);
+		panelMenu.add(modeInteractif);
+		
+		//==============PANEL POUR LES SCORE ET NOMBRE DE VIES 
+		JPanel NbV_et_Score = new JPanel();
+		Border border = BorderFactory.createRaisedBevelBorder();
+		NbV_et_Score.setBorder(border);
+		NbV_et_Score.setLayout(new GridLayout(1,2));
+		panelMenu.add(NbV_et_Score);
+		this.NbVies = new JLabel();
+		this.Score= new JLabel();
+		
+		  this.NbVies.setText("VIES RESTENT :"+Controleurclient.getNombreVie());
+		  this.Score.setText("  Score: "+Controleurclient.getScore());
+		
+		NbV_et_Score.add(this.Score);
+		NbV_et_Score.add(this.NbVies);
 
 		Dimension windowSize = frame.getSize();
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -61,7 +88,9 @@ public class ViewBombermanGame {
 		int dy = centerPoint.y = windowSize.height / 2 - 350;
 		frame.setLocation(dx, dy);
 		frame.add(this.panelBonberman,BorderLayout.CENTER);
-		frame.add(menuJPanel, BorderLayout.NORTH);
+		frame.add(panelMenu, BorderLayout.NORTH);
+		
+		
 
 
 
@@ -83,6 +112,77 @@ public class ViewBombermanGame {
 		commande.getSlider().addKeyListener(clavier);
 		commande.getFenetreCommand().setFocusable(true);
 		this.frame.setFocusable(true);
+		
+		
+		
+		
+		
+		
+		
+		
+		//=================================================AJOUTE DES ACTION LISTNER SUR LES BOUTON DES INTERFACES
+
+		layout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evenement) {
+
+               
+
+				String[] optionsToChoose = {"niveau1", "niveau2", "niveau3"};
+
+				String niveau = (String) JOptionPane.showInputDialog(
+						null,
+						"Selectionné votre niveau",
+						"Changement de niveau",
+						JOptionPane.QUESTION_MESSAGE,
+					    new ImageIcon("./images/B42.png"),
+						optionsToChoose,
+						optionsToChoose[2]);
+
+				System.out.println("nivau " + niveau+".lay");
+				Controleurclient.setNiveau(niveau);
+				Controleurclient.changeNiveau();
+				
+
+
+				frame.remove(panelBonberman);
+				frame.validate();
+
+
+
+		
+				panelBonberman=  InitPanelBonberman();
+				
+
+				frame.add(panelBonberman,BorderLayout.CENTER);
+				frame.revalidate();
+
+				panelBonberman.repaint();
+
+			}
+
+
+
+
+
+
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 

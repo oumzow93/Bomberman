@@ -190,7 +190,7 @@ public abstract class Game implements Runnable {
 			
 			
 		}
-		System.out.println(bomberman);
+
 		donnee+=bomberman;
 		
 		//4 LES PNJ
