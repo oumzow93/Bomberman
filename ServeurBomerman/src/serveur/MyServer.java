@@ -14,6 +14,7 @@ import controleur.ControllerBombermanGame;
 
 
 
+
 public class MyServer extends Thread {
 	private static ArrayList<Echange> clients = new ArrayList<>();
 	private static int ID_CLIENT=0;
@@ -112,6 +113,11 @@ public class MyServer extends Thread {
 							MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "CHANGE_NIVEAU:")); 
 							sortie.println(MyServer.getRequetteServeur());
 							
+							
+						}
+						else if (message.startsWith("SPEED")) {
+							String [] speed = message.split(":");
+							controller.setSpeed(Double.parseDouble(speed[1]));
 							
 						}
 

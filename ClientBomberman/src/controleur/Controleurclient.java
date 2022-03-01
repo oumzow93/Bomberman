@@ -31,6 +31,7 @@ public class Controleurclient {
 	private static int nombreVie =0;
 	private static int score =0;
 	private static String niveau="";
+	private static double speed;
 	
 	
 	
@@ -81,6 +82,10 @@ public class Controleurclient {
 	}
 	public  static void changeNiveau() {
 		Output.setRequete("NIVEAU:"+Controleurclient.getNiveau()+":"+turn);
+	}
+	
+	public static void effetSpeed() {
+		Output.setRequete("SPEED:"+Controleurclient.getSpeed()+":"+turn);
 	}
 
 
@@ -213,6 +218,12 @@ public class Controleurclient {
 
 	public static void setNiveau(String niveau) {
 		Controleurclient.niveau = niveau;
+	}
+	public static double getSpeed() {
+		return speed;
+	}
+	public static void setSpeed(double speed) {
+		Controleurclient.speed = speed;
 	}
 
 

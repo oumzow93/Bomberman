@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import agent.AgentBomberman;
 import agent.AgentPNJ;
@@ -181,6 +183,20 @@ public class ViewBombermanGame {
 
 			}
 		});
+		
+		
+		
+			commande.getSlider().addChangeListener(new ChangeListener() {
+		        
+		        @Override
+		        public void stateChanged(ChangeEvent e) {
+		            long value = 1000/commande.getSlider().getValue();
+		            Controleurclient.setSpeed(value);
+		            Controleurclient.effetSpeed();
+		        }
+
+		    });
+		
 
 
 
@@ -300,6 +316,7 @@ public class ViewBombermanGame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		commande.affichier();
 	}
+	
 
 
 
