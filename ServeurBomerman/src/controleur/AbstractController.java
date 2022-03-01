@@ -12,6 +12,7 @@ public interface AbstractController {
 	
 	public abstract  String getNiveau();
 	public abstract  void setNiveau(String niveau);
+	public abstract void changeNivau();
 	
 	
 	public abstract Game getGame() ;

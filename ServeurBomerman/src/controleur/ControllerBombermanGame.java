@@ -2,12 +2,13 @@ package controleur;
 
 import modele.BombermanGame;
 import modele.Game;
+import serveur.MyServer;
 
 ;
 
 public class ControllerBombermanGame implements AbstractController {
 	
-	private BombermanGame game;
+	private Game game;
 	private String niveau;
 	
 
@@ -23,8 +24,7 @@ public class ControllerBombermanGame implements AbstractController {
 
 	@Override
 	public void restart() {
-		String chemin = "../layouts/"+this.getNiveau()+".lay";
-		this.game =   new BombermanGame (100,chemin);
+
 		this.game.init();
 		this.game.pause();
 		
@@ -60,12 +60,27 @@ public class ControllerBombermanGame implements AbstractController {
 	}
 	
 	@Override
-
+	
+	
+	
+	
+	public void changeNivau() {
+		// TODO Auto-generated method stub
+		String chemin = "../layouts/"+this.getNiveau()+".lay";
+		this.game =   new BombermanGame (100,chemin);
+		this.game.SetTurn(0);
+		this.game.pause();
+		this.game.initializeGame();
+		MyServer.setRequetteServeur(this.game.donneMiseAjour());
+		
+		
+	}
+    
 	public Game getGame() {
 		return game;
 	}
 
-	public void setGame(BombermanGame game) {
+	public void setGame(Game game) {
 		this.game = game;
 	}
 
@@ -76,6 +91,8 @@ public class ControllerBombermanGame implements AbstractController {
 	public void setNiveau(String niveau) {
 		this.niveau = niveau;
 	}
+
+
 	
 
 

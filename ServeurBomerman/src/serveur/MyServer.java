@@ -107,10 +107,11 @@ public class MyServer extends Thread {
 						}else if(message.startsWith("NIVEAU")) {
 							String []niveau = message.split(":");
 							controller.setNiveau(niveau[1]);
-							controller.restart(); 
+							controller.changeNivau(); 
 							
 							MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "CHANGE_NIVEAU:")); 
-							MyServer.setRequetteClient(message);
+							sortie.println(MyServer.getRequetteServeur());
+							
 							
 						}
 
