@@ -10,11 +10,12 @@ import javax.swing.border.*;
 import client.Output;
 
 //import com.sun.tools.sjavac.comp.dependencies.PublicApiCollector;
-public class Authentification extends JFrame {
+public class Authentification  {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	public static JFrame fenetre;
+	private static JLabel  messageConnexion;
 	JPanel panHaut,panBas;
 	private JButton valider;
 	private JButton cancel;
@@ -22,16 +23,20 @@ public class Authentification extends JFrame {
 	private JTextField login;
 	private JTextField password;
 	public Authentification() {
-		//initialisation du JFrame
-		super();
-		
-		this.setSize(new Dimension(500,250));
-		this.setResizable(false); 
-		Container contenu = this.getContentPane();
+	
+		fenetre = new JFrame();
+		fenetre.setSize(new Dimension(500,250));
+		fenetre.setResizable(false); 
+		Container contenu = fenetre.getContentPane();
 		panHaut=new JPanel(new GridLayout(3,2));
 		panBas=new JPanel();
+		JPanel panCentre = new JPanel();
+		
 		contenu.add(panHaut,BorderLayout.NORTH);
 		contenu.add(panBas,BorderLayout.SOUTH);
+		contenu.add(panCentre,BorderLayout.CENTER);
+		messageConnexion= new JLabel();
+		panCentre.add(messageConnexion);
 		panHaut.add(new JLabel("username"));
 		this.login = new JTextField();
 		panHaut.add(login);
@@ -45,8 +50,8 @@ public class Authentification extends JFrame {
 		panBas.add(cancel);
 		panHaut.setBorder(new TitledBorder("authentification"));
 		Border b = BorderFactory.createLineBorder(Color.blue.darker(),5);
-		this.setVisible(true);
-		this.setLocationRelativeTo(null);
+		fenetre.setVisible(true);
+		fenetre.setLocationRelativeTo(null);
 		panBas.setBorder(b);
 		
 		
@@ -63,12 +68,9 @@ public class Authentification extends JFrame {
 
 
 						if(!usname.equals("") && !pass.equals("")) {
-							String requete = "CONNEXION;"+usname+";"+pass;
+							String requete = "CONNEXION:"+usname+":"+pass;
 							Output.setRequete(requete);
-							setVisible(false);
-
-
-
+							System.out.println(requete);
 
 						}
 
@@ -83,7 +85,7 @@ public class Authentification extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						dispose();
+						fenetre.dispose();
 
 
 
@@ -97,6 +99,26 @@ public class Authentification extends JFrame {
 				});
 
 			}
+	
+	
+	public static void fermer() {
+		fenetre.setVisible(false);
+		
+	}
+
+
+	public static JLabel getMessageConnexion() {
+		return messageConnexion;
+	}
+
+
+	public static void setMessageConnexion(String message ) {
+		Authentification.messageConnexion.setText(message);
+		Authentification.messageConnexion.setForeground(Color.red);
+	}
+
+
+
 				 
 		
 		

@@ -1,6 +1,7 @@
 package client;
 
 import java.io.IOException;
+
 import java.net.Socket;
 
 import vue.Authentification;
@@ -12,7 +13,7 @@ public class MyClient {
 	
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 		// TODO Auto-generated method stub
 		try {
 			
@@ -24,16 +25,16 @@ public class MyClient {
 			
 			
 			
+			
 			output.start();
 			input.start();
 			
 			
 			
-			authen =new Authentification();
-			
+			authen =new Authentification();		
 		
 			
-		} catch (IOException e) {
+		} catch (IOException    e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

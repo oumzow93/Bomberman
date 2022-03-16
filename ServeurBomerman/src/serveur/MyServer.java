@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import controleur.AbstractController;
 import controleur.ControllerBombermanGame;
@@ -43,6 +47,31 @@ public class MyServer extends Thread {
 		}
 		
 	}
+	public static boolean  authentification(String pseudo, String password) {
+	 
+        try {
+        	
+            HttpClient client = HttpClient.newHttpClient();
+
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/WebBomberman/APIConnexion?pseudo="+pseudo+"&password="+password ))
+                    .GET()
+                    .header("Accept", "application.json")
+                    .build();
+           
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            
+            if(!response.body().isEmpty()) {
+            	return true;
+            }
+
+            
+        }catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
+	}
 	public void run() {
 		try {
 			@SuppressWarnings("resource")
@@ -59,6 +88,7 @@ public class MyServer extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			
 		}
 	}
 
@@ -83,11 +113,19 @@ public class MyServer extends Thread {
 					if(!message.equals("null")   &&  !message.equals(null)  ) {
 
 						if(message.startsWith("CONNEXION") && echange.getClient().equals(client) ) {
-
-
-							MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "DEMARAGE:")); 
-							sortie.println(MyServer.getRequetteServeur() );
-
+							String[] connexion= message.split(":");
+							String pseudo= connexion[1];
+							String password= connexion[2];
+							
+							if(MyServer.authentification(pseudo, password)) {
+								
+								MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "DEMARAGE:")); 
+								sortie.println(MyServer.getRequetteServeur());
+							}else {
+															
+								sortie.println("ECHEC_AUTHENTIFICATION");
+							}
+							
 
 						}else if(message.startsWith("COMMANDE")) {
 							String[]commande = message.split(":");
@@ -103,7 +141,7 @@ public class MyServer extends Thread {
 							//MyServer.setRequettPrecedent(requetteServeur);
 						}else if(message.startsWith("DEPLACEMENT")) {
 							MyServer.setRequetteServeur("DEPLACEMENT"); 
-							MyServer.setRequetteClient(message);
+							MyServer.setRequetteClient(message+":"+this.id_client);
 							
 						}else if(message.startsWith("NIVEAU")) {
 							String []niveau = message.split(":");
@@ -223,6 +261,8 @@ public class MyServer extends Thread {
 
 		new MyServer().start();
 		MyServer.setController(controlleer);
+		
+		
 
 	}
 

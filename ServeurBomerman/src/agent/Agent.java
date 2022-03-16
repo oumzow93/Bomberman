@@ -57,9 +57,4 @@ public abstract class  Agent {
 		return  position + "," + direction + ","+this.typeAgent();
 	}
 
-	
-	
-	
-	
-
 }

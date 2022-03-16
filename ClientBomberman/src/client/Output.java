@@ -9,10 +9,13 @@ public class Output extends Thread {
 	private Socket client;
 	private static String requete= "";
 	private static String requetePrecedent="";
+	private int compteur=0;
+	private int id_client;
 	
 	public Output(Socket client) {
 		super();
 		this.client = client;
+		this.setId_client(++compteur);
 
 	}
 
@@ -59,6 +62,14 @@ public class Output extends Thread {
 
 	public static void setRequetePrecedent(String requtePrecedent) {
 		Output.requetePrecedent = requtePrecedent;
+	}
+
+	public int getId_client() {
+		return id_client;
+	}
+
+	public void setId_client(int id_client) {
+		this.id_client = id_client;
 	}
 
 

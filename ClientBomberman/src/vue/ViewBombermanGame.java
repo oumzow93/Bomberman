@@ -204,6 +204,7 @@ public class ViewBombermanGame {
 	}
 
 	public void changerDeNiveau() {
+
 		
 		frame.remove(panelBonberman);
 		frame.validate();
@@ -217,6 +218,8 @@ public class ViewBombermanGame {
 		frame.revalidate();
 
 		panelBonberman.repaint() ;
+		this.Score.setText(Controleurclient.getScore());
+		this.NbVies.setText(Controleurclient.getNombreVie());
 
 	}
 
@@ -264,11 +267,11 @@ public class ViewBombermanGame {
 		ColorAgent resultat = ColorAgent.DEFAULT;
 
 		switch(indice) {
-		case 0: resultat= ColorAgent.BLEU; break;
-		case 1:resultat = ColorAgent.ROUGE; break;
-		case 2:resultat = ColorAgent.VERT; break;
-		case 3:resultat = ColorAgent.JAUNE; break;
-		case 4:resultat = ColorAgent.BLANC; break;
+		case 1: resultat= ColorAgent.BLEU; break;
+		case 2:resultat = ColorAgent.ROUGE; break;
+		case 3:resultat = ColorAgent.VERT; break;
+		case 4:resultat = ColorAgent.JAUNE; break;
+		case 5:resultat = ColorAgent.BLANC; break;
 		default: break;
 		}
 		return resultat;
@@ -390,6 +393,9 @@ public class ViewBombermanGame {
 
 		this.panelBonberman.updateInfoGame(breakable_walls, infoAgent, items,bombs);
 		this.panelBonberman.repaint();
+		
+		this.Score.setText(Controleurclient.getScore());
+		this.NbVies.setText(Controleurclient.getNombreVie());
 	}
 
 	public JFrame getFrame() {

@@ -4,22 +4,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class AgentBomberman  extends Agent{
-	private int couleur;
-	static int compteur=0;
+	private  int couleur;
 	private boolean estInvincible;
 	private boolean peutPoserBomb;
 	private boolean estMalade;
 	private int rangeBom;
 	public  static int nombre_de_vies=5;
+	private static int compteur=0;
 
 	public AgentBomberman(Position poistion) {
 		super(poistion);
 		// TODO Auto-generated constructor stub
-		this.setCouleur(compteur++);
+		
 		this.estInvincible=false;
 		this.estMalade=false;
 		this.peutPoserBomb=true;
 		this.rangeBom=1;
+		this.setCouleur(++compteur);
 	}
 
 	@Override
@@ -39,6 +40,8 @@ public class AgentBomberman  extends Agent{
 	public static void  setIdCouleur() {
 		compteur=0;
 	}
+	
+
 
 	public boolean isEstMalade() {
 		return estMalade;

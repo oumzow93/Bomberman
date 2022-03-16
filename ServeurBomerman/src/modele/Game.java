@@ -278,8 +278,16 @@ public abstract class Game implements Runnable {
 						
 			}
 		}
-		
 		donnee+=item;
+		//===9 LES SCORS
+		
+		
+		donnee+=":SCORE;"+this.getScore();
+		
+		//10 LES VIES
+		
+		
+		donnee+=":VIES;"+this.getNbVies();
 		
         
 		return donnee;

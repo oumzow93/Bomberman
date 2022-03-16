@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 import controleur.Controleurclient;
+import vue.Authentification;
 import vue.ViewBombermanGame;
 
 
@@ -34,6 +35,7 @@ public class Input  extends Thread{
 				String reponse ;
 
 				while((reponse=input.readLine())!=null) {
+					//System.out.println(reponse);
 					gestionRequetteServeur(reponse);
 
 				}
@@ -50,7 +52,15 @@ public class Input  extends Thread{
 	}
 
 	public  void gestionRequetteServeur(String requette) {
-		if(requette.startsWith("DEMARAGE")) {
+		if(requette.equals("ECHEC_AUTHENTIFICATION")) {
+			//System.out.println("identifient incorecte reessayer svp!");
+			Authentification.setMessageConnexion("Identifient incorecte reessayer svp");
+		}
+		
+		else if(requette.startsWith("DEMARAGE")) {
+			System.out.println("Autehntification reussi!");
+		
+			Authentification.fermer();
 			String []infoRequette = requette.split(":");
 			Controleurclient.setTurn(infoRequette[1]);
 			this.recupTilleCarte(infoRequette[2]);
@@ -63,25 +73,28 @@ public class Input  extends Thread{
 			new Controleurclient(this.viewGame);
 			this.viewGame.afficher();
 
+
 		}else if(requette.startsWith("UPDATE")) {
-				String []infoRequette = requette.split(":");
-				Controleurclient.setTurn(infoRequette[1]);
-				this.recupTilleCarte(infoRequette[2]);
-				this.recupBomberman(infoRequette[3]);
-				this.recupPnj(infoRequette[4]);
-				this.recupBreakbleWalls(infoRequette[5]);
-				this.recupBomb(infoRequette[7]);
-				this.recupItem(infoRequette[8]);
+			String []infoRequette = requette.split(":");
+			Controleurclient.setTurn(infoRequette[1]);
+			this.recupTilleCarte(infoRequette[2]);
+			this.recupBomberman(infoRequette[3]);
+			this.recupPnj(infoRequette[4]);
+			this.recupBreakbleWalls(infoRequette[5]);
+			this.recupBomb(infoRequette[7]);
+			this.recupItem(infoRequette[8]);
+			this.reupScore(infoRequette[9]);
+			this.reupVies(infoRequette[10]);
 
 
-				
-				try {
-					this.viewGame.actualiser();
-					
-				}catch(java.lang.NullPointerException e) {
-					System.out.println("UN CLIENT A REJOIN LE PARTIE :"+e.getMessage());
-				}
-			
+
+			try {
+				this.viewGame.actualiser();
+
+			}catch(java.lang.NullPointerException e) {
+				//System.out.println("UN CLIENT A REJOIN LA PARTIE" );
+			}
+
 
 		}else if(requette.startsWith("CHANGE_NIVEAU")) {
 			String []infoRequette = requette.split(":");
@@ -91,9 +104,14 @@ public class Input  extends Thread{
 			this.recupPnj(infoRequette[4]);
 			this.recupBreakbleWalls(infoRequette[5]);
 			this.recupWalls(infoRequette[6]);
+			this.reupScore(infoRequette[9]);
+			this.reupVies(infoRequette[10]);
 			this.viewGame.changerDeNiveau();
-			
+
 		}
+
+
+
 
 	}
 
@@ -186,17 +204,17 @@ public class Input  extends Thread{
 
 	}
 	public void recupBreakbleWalls(String donnee) {
-		
+
 		boolean [][]start_breakable_walls = new boolean[Controleurclient.getSizeX()][Controleurclient.getSizeY()];
 		for(int i=0;i< Controleurclient.getSizeX();i++) {
 			for(int j=0; j<Controleurclient.getSizeY();j++) {
 				start_breakable_walls[i][j]=false;
-				
+
 			}
 		}
-		
+
 		Controleurclient.setStart_breakable_walls(start_breakable_walls);
-		
+
 		String breakablewall[] = donnee.split(";");
 
 		if(breakablewall.length>1) {
@@ -247,7 +265,7 @@ public class Input  extends Thread{
 	public void recupBomb(String  donnee) {
 		Controleurclient.getBombs().clear();
 		String []bomb = donnee.split(";");
-		
+
 
 		if(bomb.length>1) {
 			if(bomb[1].contains("&")) {
@@ -269,7 +287,7 @@ public class Input  extends Thread{
 
 				Controleurclient.setBombs(x, y,s, r);
 				Controleurclient.setBombs(x,y,s,r);
-				
+
 
 			}
 
@@ -282,7 +300,7 @@ public class Input  extends Thread{
 	public void recupItem(String  donnee) {
 		Controleurclient.getItems().clear();
 		String []item = donnee.split(";");
-		
+
 
 		if(item.length>1) {
 			if(item[1].contains("&")) {
@@ -309,15 +327,26 @@ public class Input  extends Thread{
 			//System.out.println("PAS DE BOMB");
 		}
 	}
+	
+	public void reupScore(String donnee) {
+		String []Score = donnee.split(";");
+		Controleurclient.setScore(Score[1]);
+	}
+	
+	
+	public void reupVies(String donnee) {
+		String []vie = donnee.split(";");
+		Controleurclient.setNombreVie(vie[1]);
+	}
 
 
-    public boolean parseBoolean(String chaine) {
-    	if(chaine.equals("true")) {
-    		return true;
-    	}else {
-    		return false;
-    	}
-    }
+	public boolean parseBoolean(String chaine) {
+		if(chaine.equals("true")) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 	public Socket getClient() {
 		return client;

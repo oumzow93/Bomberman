@@ -28,10 +28,11 @@ public class Controleurclient {
 	private static boolean [][]walls;
 	private static int sizeX;
 	private static int sizeY;
-	private static int nombreVie =0;
-	private static int score =0;
+	private static String nombreVie ="0";
+	private static String score ="0";
 	private static String niveau="";
 	private static double speed;
+	
 	
 	
 	
@@ -127,14 +128,17 @@ public class Controleurclient {
 	   switch(type) {
 	   case 'V':
 		   PNJVolant volant=  new PNJVolant(new Position(x,y));
+		   volant.setDirection(direction);
 		   listPNJ.add(volant);
 		   break;
 	   case 'R':
 		   PNJ_Rajion rajion = new PNJ_Rajion(new Position(x,y));
+		   rajion.setDirection(direction);
 		   listPNJ.add(rajion);
 		   break;
 	   case 'E':
 		   PNJ_Ennemi enemi = new  PNJ_Ennemi(new Position(x,y));
+		   enemi.setDirection(direction);
 		   listPNJ.add(enemi);
 		   break;
 	   }
@@ -196,20 +200,20 @@ public class Controleurclient {
 		Controleurclient.items.add(item);
 	}
 
-	public static int getNombreVie() {
+	public static String getNombreVie() {
 		return nombreVie;
 	}
 
-	public static void setNombreVie(int nombreVie) {
-		Controleurclient.nombreVie = nombreVie;
+	public static void setNombreVie(String nombreVie) {
+		Controleurclient.nombreVie = "VIES RESTENT :"+ nombreVie;
 	}
 
-	public static int getScore() {
+	public static String getScore() {
 		return score;
 	}
 
-	public static void setScore(int score) {
-		Controleurclient.score = score;
+	public static void setScore(String score) {
+		Controleurclient.score = "  Score: "+score;
 	}
 
 	public static String getNiveau() {

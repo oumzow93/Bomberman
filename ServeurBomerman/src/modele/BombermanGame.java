@@ -12,6 +12,7 @@ import agent.FactoryAgent;
 import agent.Position;
 import objets.Bomb;
 import objets.Item;
+import serveur.MyServer;
 import strategies.DeplacementAreatoire;
 import strategies.DeplacementClavier;
 import strategies.StrategieBird;
@@ -84,8 +85,8 @@ public class BombermanGame extends Game {
 			int y= this.carrte.getStart_agents().get(i).getY();
 			char type=this.carrte.getStart_agents().get(i).getType();
 			if(this.carrte.getStart_agents().get(i).getType()=='B') {
-				FactoryAgent.creerBombermant(new Position(x,y));
-				this.listBomberman.add((AgentBomberman) FactoryAgent.creerBombermant(new Position(x,y)));
+				AgentBomberman bomberman= (AgentBomberman) FactoryAgent.creerBombermant(new Position(x,y));
+				this.listBomberman.add(bomberman);
 			}else {
 				FactoryAgent.creerPNG(new Position(x,y),type);
 				this.listPNJ.add((AgentPNJ) FactoryAgent.creerPNG(new Position(x,y),type));
@@ -434,16 +435,23 @@ public class BombermanGame extends Game {
 
 	
 	@Override
-	public void takeTurn() {		
+	public void takeTurn() {
 
-		
+
+
        //=============================DEPALCEMENT DES BOMBERMAN==========		
 		for(int i=0; i< this.listBomberman.size();i++) {
-			AgentBomberman agent  = this.listBomberman.get(i);
-			
-			agent.setStrategie(new DeplacementClavier(this));
-			this.objectsSpecieux(agent);
-			
+			if(MyServer.getRequetteClient().startsWith("DEPLACEMENT")) {
+				String[] infoClient = MyServer.getRequetteClient().split(":");
+				System.out.println(infoClient[infoClient.length-1]);
+				int couleur= Integer.parseInt(infoClient[infoClient.length-1]);
+				AgentBomberman agent  = this.listBomberman.get(i);
+				if(agent.getCouleur()==couleur) {
+					agent.setStrategie(new DeplacementClavier(this));
+					this.objectsSpecieux(agent);
+					
+				}
+			}
 		}
 		//==============================DEPACLEMENT DES MECHANT
 		for(int i=0; i<this.listPNJ.size();i++) {			
