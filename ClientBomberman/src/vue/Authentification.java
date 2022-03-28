@@ -21,7 +21,7 @@ public class Authentification  {
 	private JButton cancel;
 
 	private JTextField login;
-	private JTextField password;
+	private JPasswordField password;
 	public Authentification() {
 	
 		fenetre = new JFrame();
@@ -42,7 +42,7 @@ public class Authentification  {
 		panHaut.add(login);
 		
 		panHaut.add(new JLabel("password"));
-		this.password=new  JTextField();
+		this.password=new  JPasswordField();
 		panHaut.add(password);
 		this.valider=new JButton("connexion");
 		panBas.add(this.valider);
@@ -62,6 +62,7 @@ public class Authentification  {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						String usname= login.getText();
+						@SuppressWarnings("deprecation")
 						String pass = password.getText();
 
 

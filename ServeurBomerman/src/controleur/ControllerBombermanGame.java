@@ -15,9 +15,9 @@ public class ControllerBombermanGame implements AbstractController {
 
 	public ControllerBombermanGame() {
 		super();
-		this.niveau= "niveau1";
+		this.niveau= "niveau2";
 		String chemin = "../layouts/"+this.getNiveau()+".lay";
-		this.game =   new BombermanGame (500,chemin);
+		this.game =   new BombermanGame (50,chemin);
 		this.game.init();
 		
 	}
@@ -27,6 +27,7 @@ public class ControllerBombermanGame implements AbstractController {
 
 		this.game.init();
 		this.game.pause();
+		
 		
 	}
 

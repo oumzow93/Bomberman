@@ -1,7 +1,11 @@
 package modele;
 
+
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ListIterator;
+
 import java.util.Random;
 
 
@@ -48,6 +52,9 @@ public class BombermanGame extends Game {
 	private boolean victoire;
 	private boolean defaite;
 	
+	private Date dateDeebut;
+	private Date datefinfint;
+	
 	
 
 	public BombermanGame(int maxturn,String fileName) {
@@ -61,6 +68,9 @@ public class BombermanGame extends Game {
 
 	@Override
 	public void initializeGame() {
+		//MyServer.getUtlisateur().clear();
+		this.dateDeebut= new Date();
+		System.out.println(formatage(this.getDateDeebut()));
 		this.listBomberman.clear();
 		this.listPNJ.clear();
 		this.bombs.clear();
@@ -132,19 +142,46 @@ public class BombermanGame extends Game {
 	
 	//=========================================REGLE DE FINFR JEU
 	void finDuJeu() {
+		
+		
+
 		if(this.getTurn()== this.getMaxturn() || this.listBomberman.isEmpty()) {
 			System.out.println("\n=========== DEFAITE !=======================");
+			this.setDatefinfint(new Date());
+			
 			this.defaite=true;
 			this.gameOver();
+			String dateDebut= this.formatage(dateDeebut).replaceAll(" ", "-");
+			String dateFin = this.formatage(getDatefinfint()).replaceAll(" ", "-");
+			String mode = ""+MyServer.getUtlisateur().size();
+			System.out.println(mode);
+			MyServer.sendPartie( dateDebut, dateFin, mode);
+			for(int i=0; i<MyServer.getUtlisateur().size();i++ ) {
+				String pseudo =MyServer.getUtlisateur().get(i);
+				MyServer.sendHistorique(pseudo, dateDebut);
+			}
+
 			
 			
 		}
-		if(this.listPNJ.isEmpty() && this.listBomberman.size()==1 ) {
+		if(this.listPNJ.isEmpty()) {
 			System.out.println("\n VICTOIRE !!!!!!!!!!!!");
+			this.setDatefinfint(new Date());
 			this.victoire=true;
 			this.gameOver();
+			String dateDebut= this.formatage(dateDeebut).replaceAll(" ", "-");
+			String dateFin = this.formatage(getDatefinfint()).replaceAll(" ", "-");
+			String mode = ""+MyServer.getUtlisateur().size();
+			MyServer.sendPartie( dateDebut, dateFin, mode);
+			for(int i=0; i<MyServer.getUtlisateur().size();i++ ) {
+				String pseudo =MyServer.getUtlisateur().get(i);
+				MyServer.sendHistorique(pseudo, dateDebut);
+				
+			}
+
 			
 		}
+		
 	}
 	
 	  //PRENT EN ENTRÉE UN AGENT ET UNE ACTION ET REVOI VRAI SI L'ACTION EST POSSIBLE SUE LE PLATEAU
@@ -443,7 +480,7 @@ public class BombermanGame extends Game {
 		for(int i=0; i< this.listBomberman.size();i++) {
 			if(MyServer.getRequetteClient().startsWith("DEPLACEMENT")) {
 				String[] infoClient = MyServer.getRequetteClient().split(":");
-				System.out.println(infoClient[infoClient.length-1]);
+				//System.out.println(infoClient[infoClient.length-1]);
 				int couleur= Integer.parseInt(infoClient[infoClient.length-1]);
 				AgentBomberman agent  = this.listBomberman.get(i);
 				if(agent.getCouleur()==couleur) {
@@ -485,6 +522,15 @@ public class BombermanGame extends Game {
 		//MyServer.setRequetteServeur(this.donneMiseAjour());*/
 		finDuJeu();
 		
+	}
+	
+	public String formatage(Date date) {
+		  DateFormat mediumDateFormat = DateFormat.getDateTimeInstance(
+			        DateFormat.MEDIUM,
+			        DateFormat.MEDIUM);
+	    return mediumDateFormat.format(date);
+	    
+	    
 	}
 	
 	@Override
@@ -600,6 +646,26 @@ public class BombermanGame extends Game {
 
 	public void setSizeY(int sizeY) {
 		this.sizeY = sizeY;
+	}
+
+
+	public Date getDateDeebut() {
+		return dateDeebut;
+	}
+
+
+	public void setDateDeebut(Date dateDeebut) {
+		this.dateDeebut = dateDeebut;
+	}
+
+
+	public Date getDatefinfint() {
+		return datefinfint;
+	}
+
+
+	public void setDatefinfint(Date datefinfint) {
+		this.datefinfint = datefinfint;
 	}
 
 

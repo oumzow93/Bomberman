@@ -26,6 +26,7 @@ public class MyServer extends Thread {
 	private static String requetteServeur="";
 	private static String requetteClient="";
 	private static String requettPrecedent="";
+	 private static ArrayList<String> utlisateur = new ArrayList<>();
 
 
 
@@ -47,6 +48,7 @@ public class MyServer extends Thread {
 		}
 		
 	}
+
 	public static boolean  authentification(String pseudo, String password) {
 	 
         try {
@@ -71,6 +73,49 @@ public class MyServer extends Thread {
             e.printStackTrace();
         }
         return false;
+	}
+	public static void sendPartie(String dateDebut ,String dateFin, String mode) {
+		String url = "http://localhost:8080/WebBomberman/SaveParite?debut="+dateDebut+"&fin="+dateFin+"&mode="+mode; 
+		
+        try {
+        	
+            HttpClient client = HttpClient.newHttpClient();
+
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url ))
+                    .GET()
+                    .header("Accept", "application.json")
+                    .build();
+           
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response);
+                       
+        }catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+		
+	}
+	
+	public static void sendHistorique(String pseudo, String debut) {
+		String url = "http://localhost:8080/WebBomberman/SaveHistorique?pseudo="+pseudo+"&debut="+debut;
+	       try {
+	        	
+	            HttpClient client = HttpClient.newHttpClient();
+
+	            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url ))
+	                    .GET()
+	                    .header("Accept", "application.json")
+	                    .build();
+	           
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            System.out.println(response);
+	                       
+	        }catch (IOException | InterruptedException e) {
+	            e.printStackTrace();
+	        }
+			
+		
 	}
 	public void run() {
 		try {
@@ -121,6 +166,7 @@ public class MyServer extends Thread {
 								
 								MyServer.setRequetteServeur(MyServer.getRequetteServeur().replaceAll("UPDATE:", "DEMARAGE:")); 
 								sortie.println(MyServer.getRequetteServeur());
+								MyServer.utlisateur.add(pseudo);
 							}else {
 															
 								sortie.println("ECHEC_AUTHENTIFICATION");
@@ -185,7 +231,7 @@ public class MyServer extends Thread {
 					//=================SORTIE
 					String reponse =entree.readLine();
 
-					System.out.println(reponse);
+					//System.out.println(reponse);
 					broadcast(reponse,client);
 
 					
@@ -197,9 +243,14 @@ public class MyServer extends Thread {
 				System.out.println("DECONNEXION DU CLIENT :"+this.id_client+" avec IP: "+IPadr);
 				clients.remove(this);
 				--ID_CLIENT;
+				if(!MyServer.utlisateur.isEmpty()) {
+					MyServer.utlisateur.remove(ID_CLIENT);
 
+				}
+				
 				if(ID_CLIENT==0) {
 					controller.restart();
+					MyServer.utlisateur.clear();
 				}
 
 
@@ -280,6 +331,12 @@ public class MyServer extends Thread {
 
 	public static void setRequettPrecedent(String requettPrecedent) {
 		MyServer.requettPrecedent = requettPrecedent;
+	}
+	public static ArrayList<String> getUtlisateur() {
+		return utlisateur;
+	}
+	public static void setUtlisateur(ArrayList<String> utlisateur) {
+		MyServer.utlisateur = utlisateur;
 	}
 
 
