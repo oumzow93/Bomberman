@@ -145,7 +145,7 @@ public class BombermanGame extends Game {
 		
 		
 
-		if(this.getTurn()== this.getMaxturn() || this.listBomberman.isEmpty()) {
+		if(this.getTurn()== this.getMaxturn() || this.listBomberman.isEmpty() || this.NbVies==0) {
 			System.out.println("\n=========== DEFAITE !=======================");
 			this.setDatefinfint(new Date());
 			
@@ -155,7 +155,7 @@ public class BombermanGame extends Game {
 			String dateFin = this.formatage(getDatefinfint()).replaceAll(" ", "-");
 			String mode = ""+MyServer.getUtlisateur().size();
 			System.out.println(mode);
-			MyServer.sendPartie( dateDebut, dateFin, mode);
+			MyServer.sendPartie( dateDebut, dateFin, mode,this.Score+"","DEFAITE");
 			for(int i=0; i<MyServer.getUtlisateur().size();i++ ) {
 				String pseudo =MyServer.getUtlisateur().get(i);
 				MyServer.sendHistorique(pseudo, dateDebut);
@@ -172,7 +172,7 @@ public class BombermanGame extends Game {
 			String dateDebut= this.formatage(dateDeebut).replaceAll(" ", "-");
 			String dateFin = this.formatage(getDatefinfint()).replaceAll(" ", "-");
 			String mode = ""+MyServer.getUtlisateur().size();
-			MyServer.sendPartie( dateDebut, dateFin, mode);
+			MyServer.sendPartie( dateDebut, dateFin, mode,this.Score+"","VICTOIRE");
 			for(int i=0; i<MyServer.getUtlisateur().size();i++ ) {
 				String pseudo =MyServer.getUtlisateur().get(i);
 				MyServer.sendHistorique(pseudo, dateDebut);
@@ -308,7 +308,7 @@ public class BombermanGame extends Game {
 			 int x2= enemi.getPosition().getX();
 			 int y2= enemi.getPosition().getY();
 			 if((x1==x2 && y1==y2)&& !bomberman.isInvincible() ) {
-				 if(this.NbVies>=0) {
+				 if(this.NbVies>0) {
 					 this.NbVies= this.NbVies-1; 
 				 }else {
 					 itBom.remove();

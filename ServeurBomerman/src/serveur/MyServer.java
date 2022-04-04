@@ -74,8 +74,8 @@ public class MyServer extends Thread {
         }
         return false;
 	}
-	public static void sendPartie(String dateDebut ,String dateFin, String mode) {
-		String url = "http://localhost:8080/WebBomberman/SaveParite?debut="+dateDebut+"&fin="+dateFin+"&mode="+mode; 
+	public static void sendPartie(String dateDebut ,String dateFin, String mode,String score,String resultat) {
+		String url = "http://localhost:8080/WebBomberman/SaveParite?debut="+dateDebut+"&fin="+dateFin+"&mode="+mode+"&score="+score+"&resultat="+resultat; 
 		
         try {
         	

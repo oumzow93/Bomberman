@@ -10,6 +10,7 @@ public class ControllerBombermanGame implements AbstractController {
 	
 	private Game game;
 	private String niveau;
+	private final int nommbreTours = 100;
 	
 
 
@@ -17,7 +18,7 @@ public class ControllerBombermanGame implements AbstractController {
 		super();
 		this.niveau= "niveau2";
 		String chemin = "../layouts/"+this.getNiveau()+".lay";
-		this.game =   new BombermanGame (50,chemin);
+		this.game =   new BombermanGame (nommbreTours,chemin);
 		this.game.init();
 		
 	}
@@ -68,7 +69,7 @@ public class ControllerBombermanGame implements AbstractController {
 	public void changeNivau() {
 		// TODO Auto-generated method stub
 		String chemin = "../layouts/"+this.getNiveau()+".lay";
-		this.game =   new BombermanGame (100,chemin);
+		this.game =   new BombermanGame (nommbreTours,chemin);
 		this.game.SetTurn(0);
 		this.game.pause();
 		this.game.initializeGame();
